@@ -46,6 +46,13 @@ class nc:
             return nc(self.l + nc.l)
         return None
 
+    def all_descendants(self):
+        res = nc([])
+        for n in self.l:
+            res.extend(mget_all_descendants(n))
+        return res
+
+
     def extend(self, other):
         if type(other) is list:
             self.l.extend(other)
@@ -53,6 +60,9 @@ class nc:
             self.l.extend(other.l)
         else:
             print "Extend does not work", type(other)
+
+    def count(self):
+        return self.__len__()
 
     def __len__(self):
         return len(self.l)
@@ -186,10 +196,34 @@ from clang.cindex import Index
 from clang.cindex import CursorKind
 from pprint import pprint
 
-def main():
-    global opts
 
-    mypath = 'csource'
+def get_callers(funcname, alldecls):
+    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
+
+def get_pointers(funcname, alldecls):
+    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind != CursorKind.CALL_EXPR))
+
+def takes_lock(func):
+    return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
+
+def analysis(funcname, alldecls):
+    ws = [funcname]
+    done = []
+    while len(ws) > 0:
+        curf = ws.pop()
+        done.append(curf)
+        print "Processing", curf
+	print "WS", ws
+	print "done", done
+        callers = get_callers(curf, alldecls)
+        for c in callers:
+            n = c.spelling
+            print curf,"called from", n
+            if not n in done:
+                ws.append(n)
+
+def main():
+    mypath = 'csourcelim'
     from os import listdir
     from os.path import isfile, join
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -203,22 +237,35 @@ def main():
         decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
         print "Imported declarations:", len(decls)
         alldecls.extend(decls)
+	del decls
+	del tu
         print "Total declarations: ", len(alldecls)
         i+=1
         print "Progress:", i, "/", len(onlyfiles)
+
+    funcname = "if_linkstate"
+
+    locking = "if_linkstate_task"
+
+    fs = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == locking)
+    fs.pprint()
+    for f in fs:
+	print "Takes lock", takes_lock(f)
+
+
+#    analysis(funcname, alldecls)
+
 
 
 
 #    pprint(('diags', map(get_diag_info, tu.diagnostics)))
 #    pprint(('nodes', get_info(tu.cursor)))
 
-    funcname = "if_linkstate"
-
-#    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
 #    pprint(get_info(ourfunc, 0))
 
 #    print "Any named: ", funcname, decls.any(lambda d: d.spelling == funcname)
-    decls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname)).pprint()
+
+
 #    decls.filter(lambda n: n.spelling == funcname).pprint()
 
 if __name__ == '__main__':
