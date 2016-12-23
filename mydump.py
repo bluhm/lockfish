@@ -14,6 +14,73 @@ A simple command line tool for dumping a source file using the Clang Index
 Library.
 """
 
+import clang
+import clang.cindex
+from clang import *
+from clang.cindex import *
+
+
+
+def mpprint(o):
+    from pprint import pprint
+    if type(o) is clang.cindex.Cursor:
+        print "<", o.kind, ", '", o.spelling, "'>"
+    else:
+        pprint(o)
+
+class nc:
+    """    A node collection class
+    """
+    def __init__(self):
+        self.l = []
+
+    def __init__(self, lst):
+        self.l = lst
+
+    def __str__(self):
+        return str(self.l)
+
+    def __getitem__(self, key):
+        return self.l[key]
+
+    def pprint(self):
+        print "Collection: "
+        for c in self.l:
+            mpprint(c)
+
+
+
+def get_ancestor(node, filter):
+    while node is not None:
+        node = node.lexical_parent
+        if node is not None:
+            if filter(node):
+                return node
+    return None
+
+def get_descendant(node, filter):
+    if node is None:
+        return None
+    else:
+        if filter(node):
+            return node
+        for c in node.get_children():
+            res = get_descendant(c, filter)
+            if res is not None:
+                return res
+        return None
+
+def get_descendants(node, filter):
+    if node is None:
+        return []
+    if filter(node):
+        res = [node]
+    else:
+        res = []
+    for c in node.get_children():
+        res = res + get_descendants(c, filter)
+    return res
+
 def get_diag_info(diag):
     return { 'severity' : diag.severity,
              'location' : diag.location,
@@ -53,8 +120,11 @@ def get_info(node, depth=0):
              'definition id' : get_cursor_id(node.get_definition()),
              'children' : children }
 
+
+
 def main():
     from clang.cindex import Index
+    from clang.cindex import CursorKind
     from pprint import pprint
 
     from optparse import OptionParser, OptionGroup
@@ -79,9 +149,18 @@ def main():
     if not tu:
         parser.error("unable to load input")
 
-    pprint(('diags', map(get_diag_info, tu.diagnostics)))
-    pprint(('nodes', get_info(tu.cursor)))
+#    pprint(('diags', map(get_diag_info, tu.diagnostics)))
+#    pprint(('nodes', get_info(tu.cursor)))
+    funcname = "if_linkstate_task"
+    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
+    pprint(get_info(ourfunc, 0))
+
+    decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
+    decls = nc(decls)
+    print "Total function declarations: "
+    decls.pprint()
 
 if __name__ == '__main__':
     main()
+
 
