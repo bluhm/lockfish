@@ -24,7 +24,7 @@ from clang.cindex import *
 def mpprint(o):
     from pprint import pprint
     if type(o) is clang.cindex.Cursor:
-        print "<", o.kind, ", '", o.spelling, "'>"
+        print "<",o.kind,", '", o.spelling,"' >"
     else:
         pprint(o)
 
@@ -35,7 +35,15 @@ class nc:
         self.l = []
 
     def __init__(self, lst):
-        self.l = lst
+        if type(lst) is list:
+            self.l = lst
+        elif type(lst) is clang.cindex.Cursor:
+            self.l = []
+            for n in lst:
+                self.l.append(n)
+
+    def __len__(self):
+        return len(self.l)
 
     def __str__(self):
         return str(self.l)
@@ -47,6 +55,20 @@ class nc:
         print "Collection: "
         for c in self.l:
             mpprint(c)
+
+    def filter(self, f):
+        res=[]
+        for a in self.l:
+            if f(a):
+                res.append(a)
+        return nc(res)
+
+    def any(self, f):
+        for a in self.l:
+            if f(a):
+                return True
+        return False
+
 
 
 
@@ -70,7 +92,7 @@ def get_descendant(node, filter):
                 return res
         return None
 
-def get_descendants(node, filter):
+def mget_descendants(node, filter):
     if node is None:
         return []
     if filter(node):
@@ -78,8 +100,23 @@ def get_descendants(node, filter):
     else:
         res = []
     for c in node.get_children():
-        res = res + get_descendants(c, filter)
+        res = res + mget_descendants(c, filter)
     return res
+
+def mget_all_descendants(node):
+    if node is None:
+        return []
+    res = []
+    for c in node.get_children():
+        res = res + [c] + mget_all_descendants(c)
+    return res
+
+def get_descendants(node, filter):
+    return nc(mget_descendants(node, filter))
+
+
+def get_all_descendants(node):
+    return nc(mget_all_descendants(node))
 
 def get_diag_info(diag):
     return { 'severity' : diag.severity,
@@ -151,14 +188,16 @@ def main():
 
 #    pprint(('diags', map(get_diag_info, tu.diagnostics)))
 #    pprint(('nodes', get_info(tu.cursor)))
-    funcname = "if_linkstate_task"
-    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
-    pprint(get_info(ourfunc, 0))
+    funcname = "if_linkstate"
+#    print type(tu.cursor)
+#    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
+#    pprint(get_info(ourfunc, 0))
 
     decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
-    decls = nc(decls)
-    print "Total function declarations: "
-    decls.pprint()
+    print "Total function declarations: ", len(decls)
+#    print "Any named: ", funcname, decls.any(lambda d: d.spelling == funcname)
+    decls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname)).pprint()
+#    decls.filter(lambda n: n.spelling == funcname).pprint()
 
 if __name__ == '__main__':
     main()
