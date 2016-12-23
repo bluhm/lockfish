@@ -158,14 +158,22 @@ def get_info(node, depth=0):
              'children' : children }
 
 
+def parse_file(args):
+    index = Index.create()
+
+    tu = index.parse(None, args)
+    if not tu:
+        parser.error("unable to load input")
+    return tu
+
+
+from clang.cindex import Index
+from clang.cindex import CursorKind
+from pprint import pprint
+from optparse import OptionParser, OptionGroup
+
 
 def main():
-    from clang.cindex import Index
-    from clang.cindex import CursorKind
-    from pprint import pprint
-
-    from optparse import OptionParser, OptionGroup
-
     global opts
 
     parser = OptionParser("usage: %prog [options] {filename} [clang-args*]")
@@ -181,15 +189,13 @@ def main():
     if len(args) == 0:
         parser.error('invalid number arguments')
 
-    index = Index.create()
-    tu = index.parse(None, args)
-    if not tu:
-        parser.error("unable to load input")
+    tu = parse_file(args)
 
 #    pprint(('diags', map(get_diag_info, tu.diagnostics)))
 #    pprint(('nodes', get_info(tu.cursor)))
+
     funcname = "if_linkstate"
-#    print type(tu.cursor)
+
 #    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
 #    pprint(get_info(ourfunc, 0))
 
