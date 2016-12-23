@@ -31,9 +31,6 @@ def mpprint(o):
 class nc:
     """    A node collection class
     """
-    def __init__(self):
-        self.l = []
-
     def __init__(self, lst):
         if type(lst) is list:
             self.l = lst
@@ -41,6 +38,21 @@ class nc:
             self.l = []
             for n in lst:
                 self.l.append(n)
+
+    def __add__(self, other):
+        if type(other) is list:
+            return nc(self.l + other)
+        elif other.__class__ is nc:
+            return nc(self.l + nc.l)
+        return None
+
+    def extend(self, other):
+        if type(other) is list:
+            self.l.extend(other)
+        elif other.__class__ is nc:
+            self.l.extend(other.l)
+        else:
+            print "Extend does not work", type(other)
 
     def __len__(self):
         return len(self.l)
@@ -158,7 +170,7 @@ def get_info(node, depth=0):
              'children' : children }
 
 
-def parse_file(args):
+def parse_file_args(args):
     index = Index.create()
 
     tu = index.parse(None, args)
@@ -167,29 +179,35 @@ def parse_file(args):
     return tu
 
 
+def parse_file(filename):
+    return parse_file_args([filename])
+
 from clang.cindex import Index
 from clang.cindex import CursorKind
 from pprint import pprint
-from optparse import OptionParser, OptionGroup
-
 
 def main():
     global opts
 
-    parser = OptionParser("usage: %prog [options] {filename} [clang-args*]")
-    parser.add_option("", "--show-ids", dest="showIDs",
-                      help="Compute cursor IDs (very slow)",
-                      action="store_true", default=False)
-    parser.add_option("", "--max-depth", dest="maxDepth",
-                      help="Limit cursor expansion to depth N",
-                      metavar="N", type=int, default=None)
-    parser.disable_interspersed_args()
-    (opts, args) = parser.parse_args()
+    mypath = 'csource'
+    from os import listdir
+    from os.path import isfile, join
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
-    if len(args) == 0:
-        parser.error('invalid number arguments')
+    alldecls=nc([])
 
-    tu = parse_file(args)
+    i = 0
+    for f in onlyfiles:
+        print "Parsing",f
+        tu = parse_file(join(mypath,f))
+        decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
+        print "Imported declarations:", len(decls)
+        alldecls.extend(decls)
+        print "Total declarations: ", len(alldecls)
+        i+=1
+        print "Progress:", i, "/", len(onlyfiles)
+
+
 
 #    pprint(('diags', map(get_diag_info, tu.diagnostics)))
 #    pprint(('nodes', get_info(tu.cursor)))
@@ -199,8 +217,6 @@ def main():
 #    ourfunc = get_descendant(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == funcname)
 #    pprint(get_info(ourfunc, 0))
 
-    decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
-    print "Total function declarations: ", len(decls)
 #    print "Any named: ", funcname, decls.any(lambda d: d.spelling == funcname)
     decls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname)).pprint()
 #    decls.filter(lambda n: n.spelling == funcname).pprint()
