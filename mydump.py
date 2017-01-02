@@ -206,24 +206,8 @@ def get_pointers(funcname, alldecls):
 def takes_lock(func):
     return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
 
-def analysis(funcname, alldecls):
-    ws = [funcname]
-    done = []
-    while len(ws) > 0:
-        curf = ws.pop()
-        done.append(curf)
-        print "Processing", curf
-	print "WS", ws
-	print "done", done
-        callers = get_callers(curf, alldecls)
-        for c in callers:
-            n = c.spelling
-            print curf,"called from", n
-            if not n in done:
-                ws.append(n)
 
-def main():
-    mypath = 'csourcelim'
+def get_all_decls(mypath):
     from os import listdir
     from os.path import isfile, join
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
@@ -243,6 +227,12 @@ def main():
         i+=1
         print "Progress:", i, "/", len(onlyfiles)
 
+    return alldecls
+
+def main():
+    mypath = 'csourcelim'
+    alldecls = get_all_decls(mypath)
+
     funcname = "if_linkstate"
 
     locking = "if_linkstate_task"
@@ -253,7 +243,7 @@ def main():
 	print "Takes lock", takes_lock(f)
 
 
-#    analysis(funcname, alldecls)
+    analysis(funcname, alldecls)
 
 
 
