@@ -141,5 +141,21 @@ class TestCallGraph(tc):
     cg = getSampleGraph()
     self.assertTrue(len(cg.getLeaves()) == 2)
 
+  #14
+  def testVisitor(self):
+    cg = getSampleGraph()
+    visitor = GetAllNamesVisitor()
+    cg.acceptVisitor(visitor)
+    self.assertTrue('c2' in visitor.names)
+    self.assertTrue('root' in visitor.names)
+    self.assertTrue('c3' in visitor.names)
+    self.assertTrue('c4' in visitor.names)
+    self.assertTrue(len(visitor.names) == 4)
+
+  #15
+  def testAllNames(self):
+    self.assertTrue(len(getSampleGraph().getAllNames()) == 4)
+
+
 if __name__ == '__main__':
     unittest.main()

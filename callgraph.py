@@ -96,6 +96,12 @@ def getPathInternal(root, node, path):
 def getPath(root, node):
   return getPathInternal(root, node, [])
 
+def acceptVisitor(node, visitor):
+  if node is not None:
+    visitor.visit(node)
+  for c in node.children:
+    acceptVisitor(c, visitor)
+
 class CallGraph:
   def __init__(self):
     self.root = Node()
@@ -133,6 +139,10 @@ class CallGraph:
   def getLeaves(self):
     return self.findAllFilter(lambda n: len(n.children) == 0)
 
+  def acceptVisitor(self, visitor):
+    return acceptVisitor(self.root, visitor)
+
+
   def addCall(self, caller, callee):
     # check if exactly this call already exists
     if self.any(lambda n: n is callee):
@@ -164,3 +174,20 @@ class CallGraph:
       return True
     else:
       return False
+
+  def getAllNames(self):
+    v = GetAllNamesVisitor()
+    self.acceptVisitor(v)
+    return v.names
+
+class GetAllNamesVisitor:
+  def __init__(self):
+    self.names = []
+  def visit(self, node):
+    if node is None:
+      return
+    if node.spell() in self.names:
+      return
+    else:
+      self.names.append(node.spell())
+

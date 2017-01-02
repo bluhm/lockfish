@@ -94,13 +94,14 @@ class nc:
 
 
 
-def get_ancestor(node, filter):
-    while node is not None:
-        node = node.lexical_parent
-        if node is not None:
-            if filter(node):
-                return node
-    return None
+# Broken
+#def get_ancestor(node, filter):
+#    while node is not None:
+#        node = node.lexical_parent
+#        if node is not None:
+#            if filter(node):
+#                return node
+#    return None
 
 def get_descendant(node, filter):
     if node is None:
@@ -201,7 +202,34 @@ def get_callers(funcname, alldecls):
     return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
 
 def get_pointers(funcname, alldecls):
-    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind != CursorKind.CALL_EXPR))
+    #function reference filter
+    frf = lambda n: n.spelling == funcname and n.kind == CursorKind.DECL_REF_EXPR
+    decls = alldecls.filter(lambda f: get_all_descendants(f).any(frf))
+    res = []
+    #function declarations referencing our function
+    for decl in decls:
+        #all refs
+#	print "Working with function declaration: "
+#	mpprint(decl)
+        refs = get_all_descendants(decl).filter(frf)
+#        print "References: "
+#        refs.pprint()
+        calls = get_all_descendants(decl).filter(lambda n: n.kind == CursorKind.CALL_EXPR)
+#        print "Calls: "
+#        calls.pprint()
+        for ref in refs:
+            # if there is an call containing our reference
+#            print "Investigating reference: "
+#            mpprint(ref)
+            if calls.any(lambda c: get_all_descendants(c).any(lambda e: e == ref)):
+#		print("Found a call!")
+                continue
+            else:
+                # no call contains our ref
+                res.append(decl)
+#		print "Not found a call, listing in res: "
+#		nc(res).pprint()
+    return nc(res)
 
 def takes_lock(func):
     return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")

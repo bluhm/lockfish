@@ -9,45 +9,41 @@ def build_call_graph(alldecls, rootname):
 
   curr = None
   ws = [root]
-#  done = []
 
   while len(ws) > 0:
     curr = ws.pop()
-    print "\n\nSTATE"
-    print "Current:", curr
-    print "WS", ws
-#    print "Done", done
-    print "Graph:"
-    cg.pprint()
+#    print "\n\nBUILDING CALL GRAPH"
+#    print "Current:", curr
+#    print "WS", ws
+#    print "Graph:"
+#    cg.pprint()
 
     callers = get_callers(curr.spell(), alldecls)
     for call in callers:
       node = makeNode(call)
-      print "New caller: ", node
-#      if node.spell() in done:
-#        print "Done already"
-#        continue
+#      print "New caller: ", node
       if cg.addCall(curr, node):
-        print "Added to graph and ws"
+#        print "Added to graph and ws"
         ws.append(node)
-#    print "Adding to done: ", curr.spell()
-#    done.append(curr.spell())
+        print "New caller added: ", node.spell()
 
   return cg
 
 def main():
-  mypath = 'csourcelim'
+  print "PARSING"
+  mypath = 'csource'
   alldecls = get_all_decls(mypath)
+  print "Done\n"
+
+  print "Buidling Call Graph"
   rootname = 'if_linkstate'
   cg = build_call_graph(alldecls, rootname)
-
-
-  print "Done building call graph, result: "
   cg.pprint()
+  print "Done\n"
 
+
+  print "Analyzing Locks"
   leaves = cg.getLeaves()
-
-  print "Leaves: ", leaves
   for leaf in leaves:
     stack = leaf.getStack()
     locks = False
@@ -56,7 +52,18 @@ def main():
         locks = True
         break
     if not locks:
-      print "Not taking lock here: ", stack
+      print "Lock not found: ", stack
+  print "Done\n"
+
+  print "Analyzing pointers:"
+  allfuncs = cg.getAllNames()
+  for fname in allfuncs:
+    print "Analyzing", fname
+    ptrs = get_pointers(fname, alldecls)
+    if len(ptrs) > 0:
+      print fname, "is pointed to from"
+      ptrs.pprint()
+  print("Done")
 
 
 if __name__ == '__main__':
