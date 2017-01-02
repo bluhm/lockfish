@@ -31,7 +31,7 @@ def build_call_graph(alldecls, rootname):
 
 def main():
   print "PARSING"
-  mypath = 'csource'
+  mypath = 'csourcelim'
   alldecls = get_all_decls(mypath)
   print "Done\n"
 

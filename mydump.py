@@ -205,8 +205,8 @@ def get_descendants(node, filter):
 
 
 def get_all_descendants(node):
-    return get_all_descendants_lazy(node)
-#    return nc(mget_all_descendants(node))
+#    return get_all_descendants_lazy(node)
+    return nc(mget_all_descendants(node))
 
 def get_diag_info(diag):
     return { 'severity' : diag.severity,
