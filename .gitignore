@@ -2,3 +2,5 @@
 csource
 csource/*
 csourcelim
+*.pyc
+
