@@ -273,7 +273,8 @@ def buildCallerTable(alldecls):
         for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR):
             if not call.spelling in CallerTable:
                 CallerTable[call.spelling] = []
-            CallerTable[call.spelling].append(f)
+            if not f in CallerTable[call.spelling]:
+                CallerTable[call.spelling].append(f)
     print "Caller table built"
 
 
@@ -287,39 +288,53 @@ def get_callers(funcname, alldecls):
         return []
 #    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
 
-def get_pointers(funcname, alldecls):
-    #function reference filter
-    frf = lambda n: n.spelling == funcname and n.kind == CursorKind.DECL_REF_EXPR
-    decls = alldecls.filter(lambda f: get_all_descendants(f).any(frf))
-    res = []
-    #function declarations referencing our function
-    for decl in decls:
-        #all refs
-#	print "Working with function declaration: "
-#	mpprint(decl)
-        refs = get_all_descendants(decl).filter(frf)
-#        print "References: "
-#        refs.pprint()
-        calls = get_all_descendants(decl).filter(lambda n: n.kind == CursorKind.CALL_EXPR)
-#        print "Calls: "
-#        calls.pprint()
-        for ref in refs:
+
+PointersTable = None
+
+def buildPointersTable(alldecls, allfuncs):
+    print "Building pointers table..."
+    global PointersTable
+    PointersTable = dict()
+    # prefill pointers table so that we can search for function names later
+    for f in allfuncs:
+        funcname = f
+        PointersTable[funcname] = []
+    print "Pointers table prefiled, entries: ", len(PointersTable)
+
+    # now PointersTable has all the names of all functions
+
+    # iterate over all declarations to find all references to the functions
+    for thedecl in alldecls:
+#	print "--> Searching pointers in", thedecl.spelling
+        #function reference filter
+        frf = lambda n: n.spelling in PointersTable and n.kind == CursorKind.DECL_REF_EXPR
+        # first find all references to function names, then filter out those which are calls
+        funcrefs = get_all_descendants(thedecl).filter(frf)
+    	res = []
+        # all calls in thedecl
+        calls = get_all_descendants(thedecl).filter(lambda n: n.kind == CursorKind.CALL_EXPR)
+        for ref in funcrefs:
             # if there is an call containing our reference
-#            print "Investigating reference: "
-#            mpprint(ref)
+#            print "Investigating reference: ", ref.spelling
             if calls.any(lambda c: get_all_descendants(c).any(lambda e: e == ref)):
-#		print("Found a call!")
+#		print "Found a call to", ref.spelling, "in", thedecl.spelling, "skipping"
                 continue
             else:
-                # no call contains our ref
-                res.append(decl)
-#		print "Not found a call, listing in res: "
-#		nc(res).pprint()
-    return nc(res)
+                # no call contains our ref, so ref is a pointer to function in thedecl
+#		print "Not found a call, listing in the PointersTable: ", ref.spelling, "pointed from", thedecl.spelling
+                PointersTable[ref.spelling].append(thedecl)
+
+def get_pointers(funcname):
+    global PointersTable
+    if PointersTable is None:
+	raise "Pointers table has to be built first"
+    if funcname in PointersTable:
+        return PointersTable[funcname]
+    else:
+        return []
 
 def takes_lock(func):
     return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
-
 
 def get_all_decls(mypath):
     from os import listdir

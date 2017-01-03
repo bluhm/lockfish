@@ -3,7 +3,11 @@ from callgraph import *
 
 def build_call_graph(alldecls, rootname):
   cg = CallGraph()
-  root = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == rootname)[1]
+  rootdecls = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == rootname)
+  try:
+    root = rootdecls[1]
+  except:
+    root = rootdecls[0]
   root = makeNode(root)
   cg.root = root
 
@@ -33,11 +37,13 @@ def build_call_graph(alldecls, rootname):
 def main():
   print "PARSING"
   mypath = 'csource'
+  rootname = 'if_linkstate'
+#  rootname = 'f'
+
   alldecls = get_all_decls(mypath)
   print "Done\n"
 
   print "Buidling Call Graph"
-  rootname = 'if_linkstate'
   cg = build_call_graph(alldecls, rootname)
   cg.pprint()
   print "Done\n"
@@ -58,12 +64,13 @@ def main():
 
   print "Analyzing pointers:"
   allfuncs = cg.getAllNames()
+  buildPointersTable(alldecls, allfuncs)
   for fname in allfuncs:
     print "Analyzing", fname
-    ptrs = get_pointers(fname, alldecls)
+    ptrs = get_pointers(fname)
     if len(ptrs) > 0:
       print fname, "is pointed to from"
-      ptrs.pprint()
+      nc(ptrs).pprint()
   print("Done")
 
 

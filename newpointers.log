@@ -1,5 +1,6 @@
-Script started on Di 03 Jan 2017 11:12:15 CET
-]0;zaur@zkubuntu: ~/locks/clangzaur@zkubuntu:~/locks/clang$ clear && time python buildcg.py
+Script started on Di 03 Jan 2017 12:18:21 CET
+]0;zaur@zkubuntu: ~/locks/clangzaur@zkubuntu:~/locks/clang$ . activate.sh 
+(env2) ]0;zaur@zkubuntu: ~/locks/clangzaur@zkubuntu:~/locks/clang$ clear && time python buildcg.py
 [3;J[H[2JPARSING
 Parsing tcp_output.c
 Imported declarations: 942
@@ -4744,53 +4745,4 @@ Lock not found:  [Node: if_linkstate, Node: if_down, Node: trunk_port_destroy, N
 Lock not found:  [Node: if_linkstate, Node: if_down, Node: trunk_port_destroy, Node: trunk_ioctl]
 Lock not found:  [Node: if_linkstate, Node: if_down, Node: sppp_lcp_down]
 Lock not found:  [Node: if_linkstate, Node: if_down, Node: sppp_keepalive]
-Lock not found:  [Node: if_linkstate, Node: if_down, Node: pppdealloc, Node: pppclose]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: loioctl]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: pppoe_ioctl]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: sppp_ioctl, Node: pppoe_ioctl]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: sppp_lcp_tlu]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: mpeioctl]
-Lock not found:  [Node: if_linkstate, Node: if_up, Node: gif_ioctl]
-Done
-
-Analyzing pointers:
-Analyzing if_linkstate
-Analyzing if_down
-^CTraceback (most recent call last):
-  File "buildcg.py", line 71, in <module>
-    main()
-  File "buildcg.py", line 63, in main
-    ptrs = get_pointers(fname, alldecls)
-  File "/home/zaur/locks/clang/mydump.py", line 293, in get_pointers
-    decls = alldecls.filter(lambda f: get_all_descendants(f).any(frf))
-  File "/home/zaur/locks/clang/mydump.py", line 84, in filter
-    if f(a):
-  File "/home/zaur/locks/clang/mydump.py", line 293, in <lambda>
-    decls = alldecls.filter(lambda f: get_all_descendants(f).any(frf))
-  File "/home/zaur/locks/clang/mydump.py", line 155, in any
-    return lazyany(self.root, fltrs)
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 124, in lazyany
-    if lazyany(c, preds):
-  File "/home/zaur/locks/clang/mydump.py", line 123, in lazyany
-    for c in node.get_children():
-  File "/home/zaur/locks/env2/local/lib/python2.7/site-packages/clang/cindex.py", line 1488, in get_children
-    children)
-KeyboardInterrupt
-^C
-real	19m48.671s
-user	19m14.100s
-sys	0m30.900s
-
-]0;zaur@zkubuntu: ~/locks/clangzaur@zkubuntu:~/locks/clang$ clear && time python buildcg.py[K[Kexit
-
-Script done on Di 03 Jan 2017 11:56:52 CET
+Lock not found:  
