@@ -128,7 +128,6 @@ def lazyany(node, preds):
 
 class MyIt():
     def __init__(self, root, filters):
-        print "MyIt created"
         self.stack = [root]
         self.filters = filters
 
@@ -205,8 +204,8 @@ def get_descendants(node, filter):
 
 
 def get_all_descendants(node):
-#    return get_all_descendants_lazy(node)
-    return nc(mget_all_descendants(node))
+    return get_all_descendants_lazy(node)
+#    return nc(mget_all_descendants(node))
 
 def get_diag_info(diag):
     return { 'severity' : diag.severity,
@@ -265,8 +264,28 @@ from clang.cindex import CursorKind
 from pprint import pprint
 
 
+CallerTable = None
+def buildCallerTable(alldecls):
+    print "Building caller table..."
+    global CallerTable
+    CallerTable = dict()
+    for f in alldecls:
+        for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR):
+            if not call.spelling in CallerTable:
+                CallerTable[call.spelling] = []
+            CallerTable[call.spelling].append(f)
+    print "Caller table built"
+
+
 def get_callers(funcname, alldecls):
-    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
+    global CallerTable
+    if CallerTable is None:
+        buildCallerTable(alldecls)
+    if funcname in CallerTable:
+        return CallerTable[funcname]
+    else:
+        return []
+#    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
 
 def get_pointers(funcname, alldecls):
     #function reference filter

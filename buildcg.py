@@ -23,15 +23,16 @@ def build_call_graph(alldecls, rootname):
       node = makeNode(call)
 #      print "New caller: ", node
       if cg.addCall(curr, node):
-#        print "Added to graph and ws"
-        ws.append(node)
-        print "New caller added: ", node.spell()
-
+        if not takes_lock(call):
+          ws.append(node)
+          print "New caller added: ", node.spell()
+        else:
+          print "Not adding to ws, because takes lock: ", node.spell()
   return cg
 
 def main():
   print "PARSING"
-  mypath = 'csourcelim'
+  mypath = 'csource'
   alldecls = get_all_decls(mypath)
   print "Done\n"
 
