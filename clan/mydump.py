@@ -1,17 +1,6 @@
 #!python
-import clang
-import clang.cindex
-from clang import *
-from clang.cindex import *
-
-
-
-def mpprint(o):
-    from pprint import pprint
-    if type(o) is clang.cindex.Cursor:
-        print "<",o.kind,", '", o.spelling,"' >"
-    else:
-        pprint(o)
+from clangparser import *
+from utils import *
 
 class nc:
     """    A node collection class
@@ -232,20 +221,6 @@ def get_info(node, depth=0):
              'children' : children }
 
 
-def parse_file_args(args):
-    index = Index.create()
-
-    tu = index.parse(None, args)
-    if not tu:
-        parser.error("unable to load input")
-    return tu
-
-
-def parse_file(filename):
-    return parse_file_args([filename])
-
-from clang.cindex import Index
-from clang.cindex import CursorKind
 from pprint import pprint
 
 
@@ -331,7 +306,7 @@ def get_all_decls(mypath):
     i = 0
     for f in onlyfiles:
         print "Parsing",f
-        tu = parse_file(join(mypath,f))
+        tu = parse(join(mypath,f))
         decls = get_descendants(tu.cursor, lambda node: node.kind == CursorKind.FUNCTION_DECL)
         print "Imported declarations:", len(decls)
         alldecls.extend(decls)
@@ -344,7 +319,7 @@ def get_all_decls(mypath):
     return alldecls
 
 def main():
-    mypath = 'csourcelim'
+    mypath = '../csourcelim'
     alldecls = get_all_decls(mypath)
 
     funcname = "if_linkstate"
@@ -354,13 +329,7 @@ def main():
     fs = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == locking)
     fs.pprint()
     for f in fs:
-	print "Takes lock", takes_lock(f)
-
-
-    analysis(funcname, alldecls)
-
-
-
+        print "Takes lock", takes_lock(f)
 
 #    pprint(('diags', map(get_diag_info, tu.diagnostics)))
 #    pprint(('nodes', get_info(tu.cursor)))

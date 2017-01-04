@@ -3,7 +3,9 @@ from clan.mydump import *
 from testing import *
 
 #test decls
+rdr()
 td = get_all_decls('unittest')
+rdrstop()
 
 class TestLazy(tc):
 
