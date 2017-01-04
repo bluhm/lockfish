@@ -26,6 +26,23 @@ class TestNC(tc):
     c1 = nc(res)
     self.assertTrue(c1.l == res)
 
+  #3
+  def testNCAddAppendIndexPlusLen(self):
+    global res
+    c1 = nc([])
+    c1.append(res[0])
+    c2 = nc([])
+    c2.append(res[1])
+    c3 = c1 + c2
+    self.assertTrue(c3[0] == res[0])
+    self.assertTrue(c3[1] == res[1])
+    self.assertTrue(len(c3) == 2)
+    self.assertTrue(c3.count() == 2)
+    i = 0
+    for n in c3:
+      self.assertTrue(n == res[i])
+      i = i + 1
+
 
 if  __name__ == '__main__':
     unittest.main()
