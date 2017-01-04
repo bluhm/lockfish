@@ -1,4 +1,4 @@
-from callgraph import *
+from clan.callgraph import *
 from testing import *
 
 def getEmptyNode():

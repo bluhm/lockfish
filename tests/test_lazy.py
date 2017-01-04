@@ -1,8 +1,6 @@
-import mydump
-from mydump import *
+import clan.mydump
+from clan.mydump import *
 from testing import *
-
-
 
 #test decls
 td = get_all_decls('unittest')
@@ -18,7 +16,7 @@ class TestLazy(tc):
   def testInit(self):
     call = td[2]
     dg = get_all_descendants_lazy(call)
-    self.assertTrue(dg.__class__ == mydump.DescendantGetter)
+    self.assertTrue(dg.__class__ == DescendantGetter)
 
   #3
   def testFilter1(self):

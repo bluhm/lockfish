@@ -1,19 +1,4 @@
-#!/usr/bin/env python
-
-#===- cindex-dump.py - cindex/Python Source Dump -------------*- python -*--===#
-#
-#                     The LLVM Compiler Infrastructure
-#
-# This file is distributed under the University of Illinois Open Source
-# License. See LICENSE.TXT for details.
-#
-#===------------------------------------------------------------------------===#
-
-"""
-A simple command line tool for dumping a source file using the Clang Index
-Library.
-"""
-
+#!python
 import clang
 import clang.cindex
 from clang import *
