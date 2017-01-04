@@ -1,11 +1,15 @@
-import clan.mydump
-from clan.mydump import *
 from testing import *
-
+from clan.clangparser import *
+from clan.lazy import *
 #test decls
+
 rdr()
-td = get_all_decls('unittest')
+listit = parse('unittest/one.c').cursor.get_children()
+td = []
+for n in listit:
+  td.append(n)
 rdrstop()
+
 
 class TestLazy(tc):
 
@@ -18,7 +22,7 @@ class TestLazy(tc):
   def testInit(self):
     call = td[2]
     dg = get_all_descendants_lazy(call)
-    self.assertTrue(dg.__class__ == DescendantGetter)
+    self.assertTrue(dg.__class__ == ncl)
 
   #3
   def testFilter1(self):

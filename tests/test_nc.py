@@ -3,7 +3,7 @@ from testing import *
 from clan.clangparser import *
 
 rdr()
-res = parse_folder('../csourcelim')
+res = parse_folder('csourcelim')
 rdrstop()
 rdrv=rdrval()
 
@@ -27,7 +27,7 @@ class TestNC(tc):
     self.assertTrue(c1.l == res)
 
   #3
-  def testNCAddAppendIndexPlusLen(self):
+  def testNCAddAppendIndexPlusLenInit(self):
     global res
     c1 = nc([])
     c1.append(res[0])
@@ -42,7 +42,14 @@ class TestNC(tc):
     for n in c3:
       self.assertTrue(n == res[i])
       i = i + 1
+    rdr()
+    c3.pprint()
+    rdrstop()
+    self.assertTrue("sys_socket.c" in rdrval())
 
+    c4=nc(c3)
+    for n in c4:
+      self.assertTrue(n in c3)
 
 if  __name__ == '__main__':
     unittest.main()
