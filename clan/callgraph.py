@@ -4,7 +4,7 @@ def getStack(node, stack):
   stack.insert(0, node)
   return getStack(node.back, stack)
 
-class Node:
+class CGNode:
   def __init__(self):
     self.node = None
     self.children = []
@@ -24,7 +24,7 @@ class Node:
     return self.spell()
 
   def __repr__(self):
-    return "Node: " + self.spell()
+    return "CGNode: " + self.spell()
 
   def __eq__(self, other):
     if self is None or other is None or self.node is None or other.node is None:
@@ -44,7 +44,7 @@ class Node:
 
 
 def makeNode(n):
-  res = Node()
+  res = CGNode()
   res.node = n
   return res
 
@@ -104,7 +104,7 @@ def acceptVisitor(node, visitor):
 
 class CallGraph:
   def __init__(self):
-    self.root = Node()
+    self.root = CGNode()
 
   def pprint(self):
     printTree(self.root, "")

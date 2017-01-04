@@ -2,7 +2,7 @@ from clan.callgraph import *
 from testing import *
 
 def getEmptyNode():
-  return Node()
+  return CGNode()
 
 def getNamedNode(name):
   n = getEmptyNode()
