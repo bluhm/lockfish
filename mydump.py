@@ -338,8 +338,9 @@ def takes_lock(func):
 
 def get_all_decls(mypath):
     from os import listdir
-    from os.path import isfile, join
-    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    from os.path import isfile, join, splitext
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f)) and
+      splitext(f)[1] == '.i']
 
     alldecls=nc([])
 
