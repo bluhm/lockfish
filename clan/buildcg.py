@@ -36,7 +36,7 @@ def build_call_graph(alldecls, rootname):
 
 def main():
   print "PARSING"
-  mypath = 'csource'
+  mypath = 'csourcelim'
   rootname = 'if_linkstate'
 #  rootname = 'f'
 

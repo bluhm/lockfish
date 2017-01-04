@@ -2,6 +2,16 @@ import clang
 from clang.cindex import *
 from utils import *
 
+#to be deleted
+def mget_all_descendants(node):
+    if node is None:
+        return []
+    res = []
+    for c in node.get_children():
+        res = res + [c] + mget_all_descendants(c)
+    return res
+
+
 class nc:
   """    A node collection class
   """
@@ -18,7 +28,7 @@ class nc:
       return nc(self.l + nc.l)
     return None
 
-  def all_descendants_DEPR(self):
+  def all_descendants(self):
     res = nc([])
     for n in self.l:
       res.extend(mget_all_descendants(n))
