@@ -4,7 +4,9 @@ from clan.lazy import *
 #test decls
 
 rdr()
-listit = parse('unittest/one.c').cursor.get_children()
+curs = parse('unittest/one.c').cursor
+listit = curs.get_children()
+
 td = []
 for n in listit:
   td.append(n)
@@ -30,7 +32,10 @@ class TestLazy(tc):
     d = get_all_descendants_lazy(call)
     d = d.filter(lambda n: n.spelling == 'x')
     self.assertTrue(len(d.filters) == 1)
-
+    i = 0
+    for i, n in enumerate(d):
+      self.assertTrue(i <= 1)
+    self.assertTrue(i == 1)
   #4
   def testAny1(self):
     call = td[2]
@@ -48,6 +53,22 @@ class TestLazy(tc):
       self.assertTrue(c.kind == CursorKind.UNEXPOSED_EXPR or c.kind == CursorKind.PARM_DECL)
       i+=1
     self.assertTrue(i==2)
+
+  #6
+  def testInit2(self):
+    d = ncl(td)
+    self.assertTrue(len (d.root) == 3 )
+
+  #7
+  def testInit3(self):
+    d = ncl(curs)
+    rdr()
+    d.pprint()
+    rdrstop()
+    v = rdrval()
+    print(v)
+    print(len(v.splitlines()))
+    self.assertTrue(len(rdrval().splitlines()) == 16)
 
 if  __name__ == '__main__':
     unittest.main()

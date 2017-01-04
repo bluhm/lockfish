@@ -1,3 +1,5 @@
+from AbstractNodeCollection import *
+
 def allp(preds, x):
   for p in preds:
     if not p(x):
@@ -41,11 +43,14 @@ class MyIt():
     while len(self.stack) > 0:
       it = self.stack.pop()
       if self.check(it):
-          return it
+        return it
       self.stack.extend(it.get_children())
     raise StopIteration()
 
-class DescendantGetter:
+
+
+# node collection lazy
+class ncl(AbstractNodeCollection):
   def __init__(self, root):
     if type(root) is list:
       self.root = root
@@ -58,15 +63,54 @@ class DescendantGetter:
     return lazyanys(self.root, fltrs)
 
   def filter(self, filter):
-    res = DescendantGetter(self.root)
+    res = ncl(self.root)
     res.filters = self.filters + [filter]
     return res
 
   def __iter__(self):
     return MyIt(self.root, self.filters)
 
+  def __add__(self, other):
+    if type(other) is list:
+      raise Exception("Can't add ncl to a list")
+    elif other.__class__ is nc:
+      raise Exception("Can't add ncl to an nc")
+    elif other.__class__ is ncl:
+      return ncl(self.root + ncl.root)
+    else:
+      raise Exception("Do not know how to add ncl to " + other)
 
+  def tonc(self):
+    l = []
+    for n in self:
+      l.append(n)
+    return nc(l)
 
+  def all_descendants(self):
+    return self
+
+  def extend(self, other):
+    if type(other) is list:
+      raise Exception("Can't extend ncl with a list")
+    elif other.__class__ is nc:
+      raise Exception("Can't extend ncl with an nc")
+    elif other.__class__ is ncl:
+      self.root.extend(other.root)
+    else:
+      raise Exception("Do not know how to extend ncl with " + other)
+
+  def addroots(self, other):
+    if type(other) is list:
+      self.root.extend(other)
+    elif other.__class__ is nc:
+      self.root.extend(other.l)
+    elif other.__class__ is ncl:
+      self.root.extend(other.root)
+    else:
+      raise Exception("Do not know how to add roots from " + other)
+
+  def addroot(self, n):
+    self.root.append(n)
 
 def get_all_descendants_lazy(node):
-  return DescendantGetter(node)
+  return ncl(node)

@@ -1,6 +1,7 @@
 import clang
 from clang.cindex import *
 from utils import *
+from AbstractNodeCollection import *
 
 #to be deleted
 def mget_all_descendants(node):
@@ -12,12 +13,14 @@ def mget_all_descendants(node):
     return res
 
 
-class nc:
+class nc(AbstractNodeCollection):
   """    A node collection class
   """
   def __init__(self, lst):
     if type(lst) is list:
       self.l = lst
+    elif lst.__class__ is nc:
+      self.l = lst.l[:]
     else:
       raise Exception("Can't create a nc from: ", lst)
 
@@ -25,7 +28,7 @@ class nc:
     if type(other) is list:
       return nc(self.l + other)
     elif other.__class__ is nc:
-      return nc(self.l + nc.l)
+      return nc(self.l + other.l)
     return None
 
   def all_descendants(self):
@@ -55,10 +58,8 @@ class nc:
   def __getitem__(self, key):
     return self.l[key]
 
-  def pprint(self):
-    print "Collection: "
-    for c in self.l:
-      mpprint(c)
+  def __iter__(self):
+    return self.l.__iter__()
 
   def filter(self, f):
     res=[]
@@ -73,6 +74,8 @@ class nc:
         return True
     return False
 
+  def append(self, node):
+    self.l.append(node)
 
 
 
