@@ -13,10 +13,10 @@ def parse_args(args):
 def parse(filename):
   return parse_args([filename])
 
-def parse_folder(path):
+def parse_folder(path, ext='.c'):
   from os import listdir
-  from os.path import isfile, join
-  onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+  from os.path import isfile, join, splitext
+  onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and splitext(f)[1] == ext]
   res = []
   i = 0
   for f in onlyfiles:

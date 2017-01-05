@@ -3,7 +3,7 @@ from testing import *
 from clan.clangparser import *
 
 rdr()
-res = parse_folder('csourcelim')
+res = parse_folder('csourcelim', '.c')
 rdrstop()
 rdrv=rdrval()
 
