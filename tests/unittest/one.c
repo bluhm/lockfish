@@ -1,5 +1,7 @@
 void f(){
-
+ {
+    int xxx = 2;
+ }
 }
 
 void a() {

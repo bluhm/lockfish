@@ -67,7 +67,28 @@ class TestLazy(tc):
     d.pprint()
     rdrstop()
     v = rdrval()
-    self.assertTrue(len(v.splitlines()) == 16)
+    self.assertTrue(len(v.splitlines()) >= 16)
+
+  #8
+  def testShallow(self):
+    d = ncl(curs).ofkind(CursorKind.FUNCTION_DECL).tonc()
+    self.assertTrue(d.count() == 3)
+
+  def testDepth(self):
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).tonc()
+    self.assertTrue(d.count() == 1)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(0).tonc()
+    self.assertTrue(d.count() == 0)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(1).tonc()
+    self.assertTrue(d.count() == 0)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(2).tonc()
+    self.assertTrue(d.count() == 0)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(3).tonc()
+    self.assertTrue(d.count() == 0)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(4).tonc()
+    self.assertTrue(d.count() == 1)
+    d = ncl(curs).ofkind(CursorKind.VAR_DECL).maxdepth(5).tonc()
+    self.assertTrue(d.count() == 1)
 
 if  __name__ == '__main__':
     unittest.main()
