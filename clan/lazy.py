@@ -42,9 +42,9 @@ class MyIt():
   def next(self):
     while len(self.stack) > 0:
       it = self.stack.pop()
+      self.stack.extend(list(it.get_children()))
       if self.check(it):
         return it
-      self.stack.extend(it.get_children())
     raise StopIteration()
 
 

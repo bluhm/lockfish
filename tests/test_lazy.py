@@ -34,8 +34,8 @@ class TestLazy(tc):
     self.assertTrue(len(d.filters) == 1)
     i = 0
     for i, n in enumerate(d):
-      self.assertTrue(i <= 1)
-    self.assertTrue(i == 1)
+      self.assertTrue(i <= 2)
+    self.assertTrue(i == 2)
   #4
   def testAny1(self):
     call = td[2]
@@ -50,9 +50,9 @@ class TestLazy(tc):
     d = d.filter(lambda n: n.spelling == 'x')
     i = 0
     for c in d:
-      self.assertTrue(c.kind == CursorKind.UNEXPOSED_EXPR or c.kind == CursorKind.PARM_DECL)
+      self.assertTrue(c.kind == CursorKind.UNEXPOSED_EXPR or c.kind == CursorKind.PARM_DECL or c.kind == CursorKind.DECL_REF_EXPR)
       i+=1
-    self.assertTrue(i==2)
+    self.assertTrue(i==3)
 
   #6
   def testInit2(self):
@@ -66,9 +66,7 @@ class TestLazy(tc):
     d.pprint()
     rdrstop()
     v = rdrval()
-    print(v)
-    print(len(v.splitlines()))
-    self.assertTrue(len(rdrval().splitlines()) == 16)
+    self.assertTrue(len(v.splitlines()) == 16)
 
 if  __name__ == '__main__':
     unittest.main()
