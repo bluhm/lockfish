@@ -1,15 +1,19 @@
-#from mydump import *
-from obsdanalysis import *
-from clangparser import *
-from lazy import *
+from clan.obsdanalysis import *
+from clan.clangparser import *
+from clan.lazy import *
 from clang.cindex import CursorKind
 
-configs= { 'sl': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3},
+configs= {
+           'sl3': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3},
+           'sl': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 100},
+           'all3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3},
+           'all': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
            'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20}
            }
 
 def main():
-  conf = 'tc'
+  import sys
+  conf = sys.argv[1]
 
   mypath = configs[conf]['p']
   rootname = configs[conf]['r']
@@ -23,7 +27,7 @@ def main():
   allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL)
   print "Done\n"
 
-  print "Buidling Call Graph for", rootname
+  print "Building Call Graph for", rootname
   cg = build_call_graph(allfuncs, rootname, maxdepth = configs[conf]['maxdepth'])
   cg.pprint()
   print "Done\n"

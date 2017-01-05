@@ -9,7 +9,8 @@ def takes_lock(func):
 def build_call_graph(alldecls, rootname, maxdepth = 20):
   cg = CallGraph()
   # finding the root node
-  rootdecls = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == rootname).tonc()
+  print "Searching for the root function..."
+  rootdecls = alldecls.spelled(rootname).shallow().tonc()
   # usually it is the second one, the definition, the first one is a declaration only
   try:
     root = rootdecls[1]
@@ -56,7 +57,7 @@ def pointer_analysis(targets, contents):
      n.kind == CursorKind.ENUM_DECL or
      n.kind == CursorKind.FIELD_DECL or
      n.kind == CursorKind.ENUM_CONSTANT_DECL
-      )
+      ).shallow()
 
   ptable = build_pointers_table(alldecls, allfuncs)
   for fname in allfuncs:
