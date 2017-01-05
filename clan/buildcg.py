@@ -1,5 +1,7 @@
 from mydump import *
 from callgraph import *
+from nodeutils import *
+from cgutils import *
 
 def build_call_graph(alldecls, rootname):
   cg = CallGraph()
@@ -14,7 +16,9 @@ def build_call_graph(alldecls, rootname):
   curr = None
   ws = [root]
 
-  callertable = buildCallerTable(alldecls)
+  print "Building caller table..."
+  callertable = build_caller_table(alldecls)
+  print "Caller table built"
 
   while len(ws) > 0:
     curr = ws.pop()

@@ -111,6 +111,3 @@ class ncl(AbstractNodeCollection):
 
   def addroot(self, n):
     self.root.append(n)
-
-def get_all_descendants_lazy(node):
-  return ncl(node)
