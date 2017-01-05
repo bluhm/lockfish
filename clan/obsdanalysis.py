@@ -1,11 +1,12 @@
 from nodeutils import *
 from cgutils import *
+from pointerutils import *
 from callgraph import *
 
 def takes_lock(func):
   return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
 
-def build_call_graph(alldecls, rootname):
+def build_call_graph(alldecls, rootname, maxdepth = 20):
   cg = CallGraph()
   # finding the root node
   rootdecls = alldecls.filter(lambda node: node.kind == CursorKind.FUNCTION_DECL and node.spelling == rootname).tonc()
@@ -32,8 +33,12 @@ def build_call_graph(alldecls, rootname):
       node = makeNode(call)
       if cg.addCall(curr, node):
         if not takes_lock(call):
-          ws.append(node)
-          print "New caller added: ", node.spell()
+          depth = len(node.getStack())
+          if depth <= maxdepth:
+            ws.append(node)
+            print "New caller added: ", node.spell(), "at depth:", depth
+          else:
+            print "! -> Maximal depth of", maxdepth, "achieved when adding", node.spell()+'()', "calling", curr.spell()+'()'
         else:
           print "Not adding to ws, because takes lock: ", node.spell()
   return cg
@@ -43,13 +48,12 @@ def pointer_analysis(targets, alldecls):
   allfuncs = targets
   ptable = build_pointers_table(alldecls, allfuncs)
   for fname in allfuncs:
-    print "Analyzing", fname
     ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:
       print fname, "is pointed to from"
       nc(ptrs).pprint()
-  print("Done")
-
+    else:
+      print "No pointers to", fname
 
 def lock_analysis(cg):
   leaves = cg.getLeaves()
@@ -62,5 +66,4 @@ def lock_analysis(cg):
         break
     if not locks:
       print "Lock not found: ", stack
-  print "Done\n"
 
