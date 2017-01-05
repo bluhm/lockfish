@@ -42,7 +42,7 @@ def build_call_graph(allfuncs, rootname, maxdepth = 20):
             ws.append(node)
             print "New caller added: ", node.spell(), "at depth:", depth
           else:
-            print "! -> Maximal depth of", maxdepth, "achieved when adding", node.spell()+'()', "calling", curr.spell()+'()'
+            print "! -> Maximal depth of", maxdepth, "reached when adding", node.spell()+'()', "calling", curr.spell()+'()'
         else:
           print "Not adding to ws, because takes lock: ", node.spell()
   return cg
