@@ -1,6 +1,7 @@
 from testing import *
 from clan.clangparser import *
 from clan.lazy import *
+from clan.nodeutils import get_all_descendants_lazy
 #test decls
 
 rdr()
