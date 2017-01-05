@@ -2,6 +2,8 @@ from mydump import *
 from callgraph import *
 from nodeutils import *
 from cgutils import *
+from pointerutils import *
+from obsdanalysis import takes_lock
 
 def build_call_graph(alldecls, rootname):
   cg = CallGraph()
@@ -70,10 +72,10 @@ def main():
 
   print "Analyzing pointers:"
   allfuncs = cg.getAllNames()
-  buildPointersTable(alldecls, allfuncs)
+  ptable = build_pointers_table(alldecls, allfuncs)
   for fname in allfuncs:
     print "Analyzing", fname
-    ptrs = get_pointers(fname)
+    ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:
       print fname, "is pointed to from"
       nc(ptrs).pprint()
