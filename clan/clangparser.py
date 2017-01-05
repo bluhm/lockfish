@@ -25,7 +25,6 @@ def parse_folder(path, ext='.c'):
     res.append(tu)
     i = i + 1
     print "Progress:", i, "/", len(onlyfiles)
-  print "Done"
   return res
 
 def get_cursors(tus):

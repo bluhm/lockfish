@@ -44,8 +44,20 @@ def build_call_graph(alldecls, rootname, maxdepth = 20):
   return cg
 
 
-def pointer_analysis(targets, alldecls):
+def pointer_analysis(targets, contents):
   allfuncs = targets
+
+  alldecls = contents.filter( lambda n:
+    n.kind == CursorKind.FUNCTION_DECL or
+     n.kind == CursorKind.VAR_DECL or
+     n.kind == CursorKind.STRUCT_DECL or
+     n.kind == CursorKind.UNION_DECL or
+     n.kind == CursorKind.CLASS_DECL or
+     n.kind == CursorKind.ENUM_DECL or
+     n.kind == CursorKind.FIELD_DECL or
+     n.kind == CursorKind.ENUM_CONSTANT_DECL
+      )
+
   ptable = build_pointers_table(alldecls, allfuncs)
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)

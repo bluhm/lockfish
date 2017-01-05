@@ -16,3 +16,4 @@ void d(){
  b();
 }
 
+void (*funcsarray[])(void) = {a, b, c, d}

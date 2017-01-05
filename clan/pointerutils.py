@@ -9,7 +9,7 @@ def build_pointers_table(alldecls, allfuncs):
     for f in allfuncs:
         funcname = f
         PointersTable[funcname] = []
-    print "Pointers table prefiled, entries: ", len(PointersTable)
+    print "Pointers table built"
 
     # now PointersTable has all the names of all functions
 
