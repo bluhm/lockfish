@@ -35,7 +35,7 @@ def main():
   cursors = get_cursors(tus) # iterable cursors
   contents = ncl(cursors) # wrapped in a lazy collection for performance
 
-  allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL)
+  allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
   print "Done\n"
 
   print "Building Call Graph for", rootname

@@ -1,7 +1,7 @@
 from testing import *
 from clan.clangparser import *
 from clan.lazy import *
-from clan.nodeutils import get_all_descendants_lazy
+from clan.nodeutils import get_all_descendants
 #test decls
 
 rdr()
@@ -24,13 +24,13 @@ class TestLazy(tc):
   #2
   def testInit(self):
     call = td[2]
-    dg = get_all_descendants_lazy(call)
+    dg = get_all_descendants(call)
     self.assertTrue(dg.__class__ == ncl)
 
   #3
   def testFilter1(self):
     call = td[2]
-    d = get_all_descendants_lazy(call)
+    d = get_all_descendants(call)
     d = d.filter(lambda n: n.spelling == 'x')
     self.assertTrue(len(d.filters) == 1)
     i = 0
@@ -40,14 +40,14 @@ class TestLazy(tc):
   #4
   def testAny1(self):
     call = td[2]
-    d = get_all_descendants_lazy(call)
+    d = get_all_descendants(call)
     d = d.filter(lambda n: n.spelling == 'x')
     self.assertTrue(d.any(lambda n: n.kind == CursorKind.DECL_REF_EXPR) == True)
 
   #5
   def testIter(self):
     call = td[2]
-    d = get_all_descendants_lazy(call)
+    d = get_all_descendants(call)
     d = d.filter(lambda n: n.spelling == 'x')
     i = 0
     for c in d:

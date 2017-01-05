@@ -6,11 +6,11 @@ from callgraph import *
 def takes_lock(func):
   return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
 
-def build_call_graph(alldecls, rootname, maxdepth = 20):
+def build_call_graph(allfuncs, rootname, maxdepth = 20):
   cg = CallGraph()
   # finding the root node
   print "Searching for the root function..."
-  rootdecls = alldecls.spelled(rootname).maxdepth(1).shallow().tonc()
+  rootdecls = allfuncs.spelled(rootname).maxdepth(1).shallow().tonc()
   # usually it is the second one, the definition, the first one is a declaration only
   try:
     root = rootdecls[1]
@@ -24,7 +24,7 @@ def build_call_graph(alldecls, rootname, maxdepth = 20):
   ws = [root]
 
   print "Building caller table..."
-  callertable = build_caller_table(alldecls)
+  callertable = build_caller_table(allfuncs)
   print "Caller table built"
 
   while len(ws) > 0:
