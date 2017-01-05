@@ -14,6 +14,8 @@ def build_call_graph(alldecls, rootname):
   curr = None
   ws = [root]
 
+  callertable = buildCallerTable(alldecls)
+
   while len(ws) > 0:
     curr = ws.pop()
 #    print "\n\nBUILDING CALL GRAPH"
@@ -22,7 +24,7 @@ def build_call_graph(alldecls, rootname):
 #    print "Graph:"
 #    cg.pprint()
 
-    callers = get_callers(curr.spell(), alldecls)
+    callers = get_callers(curr.spell(), callertable)
     for call in callers:
       node = makeNode(call)
 #      print "New caller: ", node
@@ -36,11 +38,11 @@ def build_call_graph(alldecls, rootname):
 
 def main():
   print "PARSING"
-  mypath = 'csourcelim'
+  mypath = 'tests/csourcelim'
   rootname = 'if_linkstate'
 #  rootname = 'f'
 
-  alldecls = get_all_decls(mypath)
+  alldecls = get_all_decls(mypath, '.c')
   print "Done\n"
 
   print "Buidling Call Graph"

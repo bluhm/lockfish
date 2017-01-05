@@ -47,53 +47,12 @@ def get_all_descendants(node):
     return get_all_descendants_lazy(node)
 #    return nc(mget_all_descendants(node))
 
-def get_diag_info(diag):
-    return { 'severity' : diag.severity,
-             'location' : diag.location,
-             'spelling' : diag.spelling,
-             'ranges' : diag.ranges,
-             'fixits' : diag.fixits }
-
-def get_cursor_id(cursor, cursor_list = []):
-    if not opts.showIDs:
-        return None
-
-    if cursor is None:
-        return None
-
-    # FIXME: This is really slow. It would be nice if the index API exposed
-    # something that let us hash cursors.
-    for i,c in enumerate(cursor_list):
-        if cursor == c:
-            return i
-    cursor_list.append(cursor)
-    return len(cursor_list) - 1
-
-def get_info(node, depth=0):
-    if opts.maxDepth is not None and depth >= opts.maxDepth:
-        children = None
-    else:
-        children = [get_info(c, depth+1)
-                    for c in node.get_children()]
-    return { 'id' : get_cursor_id(node),
-             'kind' : node.kind,
-             'usr' : node.get_usr(),
-             'spelling' : node.spelling,
-             'location' : node.location,
-             'extent.start' : node.extent.start,
-             'extent.end' : node.extent.end,
-             'is_definition' : node.is_definition(),
-             'definition id' : get_cursor_id(node.get_definition()),
-             'children' : children }
-
 
 from pprint import pprint
 
 
-CallerTable = None
 def buildCallerTable(alldecls):
     print "Building caller table..."
-    global CallerTable
     CallerTable = dict()
     for f in alldecls:
         for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR):
@@ -102,17 +61,14 @@ def buildCallerTable(alldecls):
             if not f in CallerTable[call.spelling]:
                 CallerTable[call.spelling].append(f)
     print "Caller table built"
+    return CallerTable
 
 
-def get_callers(funcname, alldecls):
-    global CallerTable
-    if CallerTable is None:
-        buildCallerTable(alldecls)
+def get_callers(funcname, CallerTable):
     if funcname in CallerTable:
         return CallerTable[funcname]
     else:
         return []
-#    return alldecls.filter(lambda f: get_all_descendants(f).any(lambda n: n.spelling == funcname and n.kind == CursorKind.CALL_EXPR))
 
 
 PointersTable = None
@@ -162,11 +118,11 @@ def get_pointers(funcname):
 def takes_lock(func):
     return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
 
-def get_all_decls(mypath):
+def get_all_decls(mypath, ext='.i'):
     from os import listdir
     from os.path import isfile, join, splitext
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f)) and
-      splitext(f)[1] == '.i']
+      splitext(f)[1] == ext]
 
     alldecls=nc([])
 
