@@ -4,7 +4,10 @@ from pointerutils import *
 from callgraph import *
 
 def takes_lock(func):
-  return get_descendants(func, lambda node: node.spelling == "rw_enter_write").all_descendants().any(lambda n: n.spelling == "netlock")
+  for c in get_all_descendants(func).spelled("rw_enter_write"):
+    if get_all_descendants(c).spelled("netlock").some():
+      return True
+  return False
 
 def build_call_graph(allfuncs, rootname, maxdepth = 20):
   cg = CallGraph()
@@ -59,7 +62,10 @@ def pointer_analysis(targets, contents):
      n.kind == CursorKind.ENUM_CONSTANT_DECL
       ).shallow()
 
+  print "Building pointers table..."
   ptable = build_pointers_table(alldecls, allfuncs)
+  print "Pointers table built"
+
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:

@@ -78,6 +78,18 @@ class ncl(AbstractNodeCollection):
     fltrs = self.filters + [filter]
     return lazyanys(self.root, fltrs)
 
+  def empty(self):
+    return not lazyanys(self.root, self.filters)
+
+  def none(self):
+    return self.empty()
+
+  def some(self):
+    return not self.empty()
+
+  def exist(self):
+    return self.some()
+
   def filter(self, filter):
     res = ncl(self.root)
     res.filters = self.filters + [filter]
