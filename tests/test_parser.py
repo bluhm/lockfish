@@ -1,4 +1,5 @@
 from clan.clangparser import *
+from clang.cindex import Cursor
 from testing import *
 
 class TestParser(tc):
@@ -14,6 +15,9 @@ class TestParser(tc):
     rdrstop()
     self.assertTrue('Progress: 5 / 5' in rdrval())
     self.assertTrue(len(res) == 5)
+    cs = get_cursors(res)
+    for c in cs:
+      self.assertTrue(type(c) is clang.cindex.Cursor)
 
 if  __name__ == '__main__':
     unittest.main()

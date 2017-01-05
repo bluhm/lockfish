@@ -28,3 +28,8 @@ def parse_folder(path, ext='.c'):
   print "Done"
   return res
 
+def get_cursors(tus):
+  res = []
+  for tu in tus:
+    res.append(tu.cursor)
+  return res

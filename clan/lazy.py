@@ -1,4 +1,5 @@
 from AbstractNodeCollection import *
+from nc import nc
 
 def allp(preds, x):
   for p in preds:
