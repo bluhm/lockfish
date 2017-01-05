@@ -1,5 +1,3 @@
-import clang
-from clang.cindex import *
 from utils import *
 from AbstractNodeCollection import *
 
@@ -22,7 +20,10 @@ class nc(AbstractNodeCollection):
     elif lst.__class__ is nc:
       self.l = lst.l[:]
     else:
-      raise Exception("Can't create a nc from: ", lst)
+      try:
+        self.l = list(lst)
+      except:
+        raise Exception("Can't create a nc from: ", lst)
 
   def __add__(self, other):
     if type(other) is list:
