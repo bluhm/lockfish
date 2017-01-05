@@ -10,7 +10,7 @@ def build_call_graph(alldecls, rootname, maxdepth = 20):
   cg = CallGraph()
   # finding the root node
   print "Searching for the root function..."
-  rootdecls = alldecls.spelled(rootname).shallow().tonc()
+  rootdecls = alldecls.spelled(rootname).maxdepth(1).shallow().tonc()
   # usually it is the second one, the definition, the first one is a declaration only
   try:
     root = rootdecls[1]
