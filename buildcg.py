@@ -6,8 +6,10 @@ from clang.cindex import CursorKind
 configs= {
            'sl3': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3},
            'sl': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 100},
-           'all3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3},
-           'all': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
+           'cs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3},
+           'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
+           'ncs3': {'p': 'newcsource', 'r': 'if_linkstate', 'maxdepth': 3},
+           'ncs': {'p': 'newcsource', 'r': 'if_linkstate', 'maxdepth': 30},
            'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20}
            }
 

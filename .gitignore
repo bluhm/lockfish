@@ -1,5 +1,7 @@
 *.swp
 csource
 csource/*
+newcsource
+newcsource/*
 *.pyc
 

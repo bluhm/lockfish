@@ -30,10 +30,13 @@ def lazyanys(nodes, preds):
   return False
 
 class MyIt():
-  def __init__(self, root, filters, shallow):
-    self.stack = root[:]
+  def __init__(self, root, filters, shallow, depth=None):
+    self.stack = []
+    for n in root:
+      self.stack.append((n, 0)) #depth 0
     self.filters = filters
     self.shallow = shallow
+    self.maxdepth = depth
 
   def __iter__(self):
     return self
@@ -43,10 +46,12 @@ class MyIt():
 
   def next(self):
     while len(self.stack) > 0:
-      it = self.stack.pop()
+      it, d = self.stack.pop()
       check = self.check(it)
       if (self.shallow and not check) or not self.shallow:
-        self.stack.extend(list(it.get_children()))
+        if self.maxdepth == None or self.maxdepth >= d:
+          for ch in it.get_children():
+            self.stack.append((ch, d+1))
       if check:
         return it
     raise StopIteration()
@@ -58,12 +63,14 @@ class ncl(AbstractNodeCollection):
   def __init__(self, root):
     self.filters = []
     self.mshallow = False
+    self.mdepth = None
     if type(root) is list:
       self.root = root
     elif root.__class__ is ncl:
       self.root = root.root[:]
       self.filters = root.filters[:]
       self.mshallow = root.mshallow
+      self.mdepth = root.mdepth
     else: # try converting iterables
       self.root = [root]
 
@@ -77,7 +84,7 @@ class ncl(AbstractNodeCollection):
     return res
 
   def __iter__(self):
-    return MyIt(self.root, self.filters, self.mshallow)
+    return MyIt(self.root, self.filters, self.mshallow, self.mdepth)
 
   def __add__(self, other):
     if type(other) is list:
@@ -103,6 +110,15 @@ class ncl(AbstractNodeCollection):
     res = ncl(self)
     res.mshallow = True
     return res
+
+  def maxdepth(self, d):
+    # deep copy
+    res = ncl(self)
+    if self.mdepth is not None:
+      d = min(d, self.mdepth)
+    res.mdepth = d
+    return res
+
 
   def extend(self, other):
     if type(other) is list:
