@@ -2,6 +2,7 @@ from clan.obsdanalysis import *
 from clan.clangparser import *
 from clan.lazy import *
 from clang.cindex import CursorKind
+from clan.cgutils import *
 
 configs= {
            'sl3': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
@@ -38,8 +39,12 @@ def main():
   allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
   print "Done\n"
 
+  print "Building caller table..."
+  callertable = build_caller_table(allfuncs)
+  print "Caller table built"
+
   print "Building Call Graph for", rootname
-  cg = build_call_graph(allfuncs, rootname, maxdepth = configs[conf]['maxdepth'])
+  cg = build_call_graph(callertable, allfuncs, rootname, maxdepth = configs[conf]['maxdepth'])
   cg.pprint()
   print "Done\n"
 

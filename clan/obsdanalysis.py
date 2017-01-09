@@ -9,7 +9,7 @@ def takes_lock(func):
       return True
   return False
 
-def build_call_graph(allfuncs, rootname, maxdepth = 20):
+def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
   cg = CallGraph()
   # finding the root node
   print "Searching for the root function..."
@@ -25,10 +25,6 @@ def build_call_graph(allfuncs, rootname, maxdepth = 20):
 
   curr = None
   ws = [root]
-
-  print "Building caller table..."
-  callertable = build_caller_table(allfuncs)
-  print "Caller table built"
 
   while len(ws) > 0:
     curr = ws.pop()
