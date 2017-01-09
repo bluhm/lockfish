@@ -3,10 +3,10 @@ SYSOBJDIR?=	${BSDSRCDIR}/sys/arch/${MACHINE}/compile/GENERIC.MP/obj
 
 .MAIN: buildcg
 
-.PHONY: buildcg cpp clean 
+.PHONY: buildcg cpp clean
 
 clean:
-	rm -f stamp-* csource/*.{i,d}
+	rm -f stamp-* csource/*.{i,d} *.pyc clan/*.pyc tests/*.pyc
 
 .include "${SYSOBJDIR}/Makefile"
 
