@@ -25,12 +25,21 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
 
   curr = None
   ws = [root]
+  done = set()
 
   while len(ws) > 0:
     curr = ws.pop()
     callers = get_callers(curr.spell(), callertable)
     for call in callers:
+
       node = makeNode(call)
+
+      if node.spell() not in done:
+        done.add(node.spell())
+      else:
+        print "Already done: ", node.spell()
+        continue
+
       if cg.addCall(curr, node):
         if not takes_lock(call):
           depth = len(node.getStack())
@@ -41,6 +50,8 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
             print "! -> Maximal depth of", maxdepth, "reached when adding", node.spell()+'()', "calling", curr.spell()+'()'
         else:
           print "Not adding to ws, because takes lock: ", node.spell()
+      else:
+        print "Not adding to caller graph: ", node.spell()
   return cg
 
 

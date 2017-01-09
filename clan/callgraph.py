@@ -146,15 +146,18 @@ class CallGraph:
   def addCall(self, caller, callee):
     # check if exactly this call already exists
     if self.any(lambda n: n is callee):
+      print "Call already exists:", callee.spell(), "calling", callee.getStack()
       return False
     # find the caller node in the tree
     callerInTheTree = self.find(caller)
     # one has to add caller first
     if callerInTheTree is None:
+      print "No caller in the tree:", caller.spell()
       return False
     # check that there is no such callee already
     for c in callerInTheTree.children:
       if c == callee:
+        print "Caller already exists:", c.spell(), "calling", callerInTheTree.spell()
         return False
     # not building loops
     stack = callerInTheTree.getStack()
@@ -169,6 +172,7 @@ class CallGraph:
       # chain closed already
       if recursionFound and call == callee:
         adding = False
+        print "Recursion found on:", callee.spell(), "in stack", stack
     if adding:
       callerInTheTree.addChild(callee)
       return True

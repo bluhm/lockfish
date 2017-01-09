@@ -37,24 +37,25 @@ def main():
   contents = ncl(cursors) # wrapped in a lazy collection for performance
 
   allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
-  print "Done\n"
+  print "Done"
 
-  print "Building caller table..."
+  print "\nBuilding caller table..."
   callertable = build_caller_table(allfuncs)
   print "Caller table built"
 
-  print "Building Call Graph for", rootname
+  print "\nBuilding caller graph for", rootname
   cg = build_call_graph(callertable, allfuncs, rootname, maxdepth = configs[conf]['maxdepth'])
+  print "Done"
+  print "\nCaller graph:"
   cg.pprint()
-  print "Done\n"
 
-  print "Analyzing Locks"
+  print "\nAnalyzing locks:"
   lock_analysis(cg)
-  print "Done\n"
+  print "Done"
 
-  print "Analyzing pointers:"
+  print "\nAnalyzing pointers:"
   pointer_analysis(cg.getAllNames(), contents)
-  print "Done\n"
+  print "Done"
 
 if __name__ == '__main__':
   main()

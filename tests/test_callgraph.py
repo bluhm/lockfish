@@ -107,6 +107,7 @@ class TestCallGraph(tc):
 
   #11
   def testAddCall(self):
+    rdr()
     n1 = getNamedNode("root")
     cg = CallGraph()
     cg.root = n1
@@ -129,6 +130,7 @@ class TestCallGraph(tc):
     self.assertFalse(cg.addCall(newroot, newroot2))
     # trying to add a duplicate call
     self.assertFalse(cg.addCall(newroot, n3))
+    rdrstop()
 
   #12
   def testFindAll(self):
