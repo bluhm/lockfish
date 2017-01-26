@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from clan.obsdanalysis import *
 from clan.clangparser import *
 from clan.lazy import *

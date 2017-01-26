@@ -76,8 +76,7 @@ def pointer_analysis(targets, contents):
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:
-      print fname, "is pointed to from"
-      nc(ptrs).pprint()
+      print fname, "is pointed to from:", ptrs
     else:
       print "No pointers to", fname
 

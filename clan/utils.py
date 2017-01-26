@@ -3,7 +3,7 @@ from pprint import pprint
 
 def mpprint(o):
     if type(o) is clang.cindex.Cursor:
-        print "<",o.kind,", '", o.spelling,"' >"
+        print o.spelling
     else:
         pprint(o)
 
@@ -27,3 +27,8 @@ def get_info(node, depth=0):
              'is_definition' : node.is_definition(),
              'children' : children }
 
+def tostr(crs):
+  return str(crs.spelling)
+
+from clang.cindex import Cursor
+Cursor.__str__ = tostr
