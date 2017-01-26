@@ -11,13 +11,13 @@ clean:
 .include "${SYSOBJDIR}/Makefile"
 
 buildcg: stamp-cpp
-	ulimit -d `ulimit -d -H`; python2.7 $@.py
+	ulimit -d `ulimit -d -H`; python2.7 $@.py ncs
 
 cpp: ${CFILES:S/.c$/.i/}
 
 stamp-cpp: ${CFILES}
 	rm -f $@
-	${MAKE} -j 5 cpp
+	${MAKE} -j 4 cpp
 	date >$@
 
 .SUFFIXES: .c .i

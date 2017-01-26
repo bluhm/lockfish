@@ -9,9 +9,10 @@ configs= {
            'sl': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 100, 'ext': '.c'},
            'cs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
            'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
-           'ncs3': {'p': 'newcsource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.i'},
-           'ncs': {'p': 'newcsource', 'r': 'if_linkstate', 'maxdepth': 30, 'ext': '.i'},
-           'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20, 'ext': '.c'}
+           'ncs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.i'},
+           'ncs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30, 'ext': '.i'},
+           'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
+           'rsm': {'p': 'csource', 'r': 'rt_sendmsg', 'maxdepth': 30, 'ext': '.i'},
            }
 
 import sys
