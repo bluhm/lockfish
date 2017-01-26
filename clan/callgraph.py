@@ -24,7 +24,7 @@ class CGNode:
     return self.spell()
 
   def __repr__(self):
-    return "CGNode: " + self.spell()
+    return self.spell()
 
   def __eq__(self, other):
     if self is None or other is None or self.node is None or other.node is None:
