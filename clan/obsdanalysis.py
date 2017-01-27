@@ -30,6 +30,7 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
   while len(ws) > 0:
     curr = ws.pop()
     callers = get_callers(curr.spell(), callertable)
+
     for call in callers:
 
       node = makeNode(call)
