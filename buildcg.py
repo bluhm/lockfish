@@ -10,10 +10,12 @@ configs= {
            'sl3': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
            'sl': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 100, 'ext': '.c'},
            'cs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
-           'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
+           'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30, 'ext': '.c'},
            'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'tccg': {'p': 'tests/testccg', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
+           'tcrec': {'p': 'tests/testcrec', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'ttdb': {'p': 'tests/testctdb', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
+           'pfc': {'p': 'tests/pfc', 'r': 'pfkey_sendup', 'maxdepth': 30, 'ext': '.c'},
            'rsm': {'p': 'csource', 'r': 'rt_sendmsg', 'maxdepth': 30, 'ext': '.i'},
            }
 

@@ -10,6 +10,7 @@ class CGNode:
     self.children = []
     self.back = None
     self.recursed = False
+    self.analyzed = False
 
   def pprint(self):
     print(self.spell())
@@ -143,40 +144,39 @@ class CallGraph:
     return acceptVisitor(self.root, visitor)
 
 
-  def addCall(self, caller, callee):
-# We allow duplicated calls now, this is needed to find leaves correctly
-#    # check if exactly this call already exists
-#    if self.any(lambda n: n is callee):
-#      print "Call already exists:", callee.spell(), "calling", callee.getStack()
-#      return False
-
-    # find the caller node in the tree
-    callerInTheTree = self.find(caller)
-    # one has to add caller first
-    if callerInTheTree is None:
-      print "No caller in the tree:", caller.spell()
+  def addCall(self, callee, caller):
+    # check if exactly this call already exists
+    if self.any(lambda n: n is caller):
+      print "Call already exists:", caller.spell(), "calling", caller.getStack()
       return False
-    # check that there is no such callee already
-    for c in callerInTheTree.children:
-      if c == callee:
-        print "Caller already exists:", c.spell(), "calling", callerInTheTree.spell()
+
+    # find the callee node in the tree
+    calleeInTheTree = self.find(callee)
+    # one has to add callee first
+    if calleeInTheTree is None:
+      print "No callee in the tree:", callee.spell()
+      return False
+    # check that there is no such caller already
+    for c in calleeInTheTree.children:
+      if c == caller:
+        print "callee already exists:", c.spell(), "calling", calleeInTheTree.spell()
         return False
     # not building loops
-    stack = callerInTheTree.getStack()
+    stack = calleeInTheTree.getStack()
     adding = True
     recursionFound = False
     for call in stack:
       # comparison by name here
-      if not recursionFound and call == callee:
+      if not recursionFound and call == caller:
         recursionFound = True
-        callee.recursed = True
+        caller.recursed = True
         continue
       # chain closed already
-      if recursionFound and call == callee:
+      if recursionFound and call == caller:
         adding = False
-        print "Recursion found on:", callee.spell(), "in stack", stack
+        print "Recursion found on:", caller.spell(), "in stack", stack
     if adding:
-      callerInTheTree.addChild(callee)
+      calleeInTheTree.addChild(caller)
       return True
     else:
       return False

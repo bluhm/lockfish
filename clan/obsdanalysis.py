@@ -33,29 +33,29 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
 
     for call in callers:
 
-      node = makeNode(call)
+      callerNode = makeNode(call)
 
-      if node.spell() not in done:
-        done.add(node.spell())
+      if callerNode.spell() not in done:
+        done.add(callerNode.spell())
       else:
-        print "Already done: ", node.spell()
-        existing = cg.findByName(node.spell())
-        if not cg.addCall(curr, existing):
+        print "Already done: ", callerNode.spell()
+        callerNode.analyzed = True
+        if not cg.addCall(curr, callerNode):
           print "Failure in algorithm to add already done node!"
         continue
 
-      if cg.addCall(curr, node):
+      if cg.addCall(curr, callerNode):
         if not takes_lock(call):
-          depth = len(node.getStack())
+          depth = len(callerNode.getStack())
           if depth <= maxdepth:
-            ws.append(node)
-            print "New caller added: ", node.spell(), "at depth:", depth
+            ws.append(callerNode)
+            print "New caller added: ", callerNode.spell(), "at depth:", depth
           else:
-            print "! -> Maximal depth of", maxdepth, "reached when adding", node.spell()+'()', "calling", curr.spell()+'()'
+            print "! -> Maximal depth of", maxdepth, "reached when adding", callerNode.spell()+'()', "calling", curr.spell()+'()'
         else:
-          print "Not adding to ws, because takes lock: ", node.spell()
+          print "Not adding to ws, because takes lock: ", callerNode.spell()
       else:
-        print "Not adding to caller graph: ", node.spell()
+        print "Not adding to caller graph: ", callerNode.spell()
   return cg
 
 
@@ -88,6 +88,9 @@ def pointer_analysis(targets, contents):
 def lock_analysis(cg):
   leaves = cg.getLeaves()
   for leaf in leaves:
+    # analyzed at another point in the tree
+    if leaf.analyzed:
+      continue
     stack = leaf.getStack()
     locks = False
     for call in stack:
