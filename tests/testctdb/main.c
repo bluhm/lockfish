@@ -19,3 +19,7 @@ void d(){
 }
 
 void (*funcsarray[])(void) = {a, b, c, d}
+
+void not_pointing_to_a() {
+  a();
+}
