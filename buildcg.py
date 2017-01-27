@@ -13,6 +13,7 @@ configs= {
            'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30},
            'tc': {'p': 'tests/testc', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'tccg': {'p': 'tests/testccg', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
+           'ttdb': {'p': 'tests/testctdb', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'rsm': {'p': 'csource', 'r': 'rt_sendmsg', 'maxdepth': 30, 'ext': '.i'},
            }
 
@@ -42,7 +43,7 @@ def main():
   print "Done"
 
   print "\nBuilding caller table..."
-  callertable = build_caller_table(allfuncs)
+  callertable = build_caller_table_obsd(allfuncs)
   print "Caller table built"
 
   print "\nBuilding caller graph for", rootname

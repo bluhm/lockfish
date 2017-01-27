@@ -97,3 +97,16 @@ def lock_analysis(cg):
     if not locks:
       print "Lock not found: ", stack
 
+
+class tbd_detector:
+  def detect(self, f):
+    res = []
+    for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR).spelled("tdb_walk"):
+      args = get_all_descendants(call).tonc()
+      called = args[2]
+      res.append(called)
+    return res
+
+def build_caller_table_obsd(allfuncs):
+  detectors = [tbd_detector()]
+  return build_caller_table(allfuncs, detectors)
