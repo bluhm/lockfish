@@ -38,6 +38,9 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
         done.add(node.spell())
       else:
         print "Already done: ", node.spell()
+        existing = cg.findByName(node.spell())
+        if not cg.addCall(curr, existing):
+          print "Failure in algorithm to add already done node!"
         continue
 
       if cg.addCall(curr, node):

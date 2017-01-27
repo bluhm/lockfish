@@ -16,7 +16,7 @@ class TestUtils(tc):
       mpprint(c)
       rdrstop()
       v = rdrval()
-      self.assertTrue('FUNCTION_DECL' in v)
+      self.assertTrue(c.spelling in v)
 
 if  __name__ == '__main__':
     unittest.main()

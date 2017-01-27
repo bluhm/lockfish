@@ -128,8 +128,8 @@ class TestCallGraph(tc):
     #trying to add a loop again!
     newroot2 = getNamedNode("root")
     self.assertFalse(cg.addCall(newroot, newroot2))
-    # trying to add a duplicate call
-    self.assertFalse(cg.addCall(newroot, n3))
+    # trying to add a duplicate call, now should still work
+    self.assertTrue(cg.addCall(newroot, n3))
     rdrstop()
 
   #12

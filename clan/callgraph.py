@@ -144,10 +144,12 @@ class CallGraph:
 
 
   def addCall(self, caller, callee):
-    # check if exactly this call already exists
-    if self.any(lambda n: n is callee):
-      print "Call already exists:", callee.spell(), "calling", callee.getStack()
-      return False
+# We allow duplicated calls now, this is needed to find leaves correctly
+#    # check if exactly this call already exists
+#    if self.any(lambda n: n is callee):
+#      print "Call already exists:", callee.spell(), "calling", callee.getStack()
+#      return False
+
     # find the caller node in the tree
     callerInTheTree = self.find(caller)
     # one has to add caller first
