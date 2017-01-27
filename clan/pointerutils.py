@@ -24,7 +24,7 @@ def build_pointers_table(alldecls, allfuncs):
     calls = get_all_descendants(thedecl).filter(lambda n: n.kind == CursorKind.CALL_EXPR)
     for ref in funcrefs:
       # if there is a call containing our reference
-      if calls.any(lambda c: get_all_descendants(c).any(lambda e: e == ref)):
+      if calls.spelled(ref.spelling).exist():
         continue
       else:
         # no call contains our ref, so ref is a pointer to function in thedecl
