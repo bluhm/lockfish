@@ -78,7 +78,8 @@ def pointer_analysis(targets, contents):
     if len(ptrs) > 0:
       print fname, "is pointed to from:", ptrs
     else:
-      print "No pointers to", fname
+      pass
+#      print "No pointers to", fname
 
 def lock_analysis(cg):
   leaves = cg.getLeaves()
