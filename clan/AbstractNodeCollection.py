@@ -1,9 +1,9 @@
 from utils import *
 
 class AbstractNodeCollection:
-  def pprint(self):
+  def pprint(self, v = 1):
     for c in self:
-      mpprint(c)
+      mpprint(c, v)
 
   def spelled(self, s):
     """Filter nodes with spelling"""

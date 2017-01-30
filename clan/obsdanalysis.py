@@ -74,8 +74,7 @@ def pointer_analysis(targets, contents):
       ).shallow()
 
   print "Building pointers table..."
-  ptable = build_pointers_table(alldecls, allfuncs)
-  print "Pointers table built"
+  ptable = build_pointers_table_obsd(alldecls, allfuncs)
 
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)
@@ -105,11 +104,28 @@ class tbd_detector:
   def detect(self, f):
     res = []
     for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR).spelled("tdb_walk"):
-      args = get_all_descendants(call).tonc()
-      called = args[2]
-      res.append(called)
+      args = call.get_children() # inside the tdb
+      for i, a in enumerate(args):
+        if i == 2: #second argument to tdb_walk
+          complex = False #first assume a function pointer
+          for j, c in enumerate(a.get_children()): #inside the second argument, to eliminate complex expressions
+            if j == 0 and c.kind == CursorKind.DECL_REF_EXPR:
+              called = c # call detected
+            if j >=1 or c.kind != CursorKind.DECL_REF_EXPR:
+              complex = True
+              break
+          if not complex:
+            res.append(called)
+          else:
+            print "Complex tdb_walk call found! Please, check it manually: ", get_info(call)['location']
+          break #only interested in the second argument
+
     return res
 
 def build_caller_table_obsd(allfuncs):
   detectors = [tbd_detector()]
   return build_caller_table(allfuncs, detectors)
+
+def build_pointers_table_obsd(alldecls, allfuncs):
+  detectors = [tbd_detector()]
+  return build_pointers_table(alldecls, allfuncs, detectors)

@@ -8,8 +8,15 @@ void b(){
 
 
 void c(){
-  tdb_walk(1, a, 2);
+  int rdomain, dump_state;
+  int rval = tdb_walk(rdomain, a, &dump_state);
 }
+
+void c2(){
+  int rdomain, dump_state;
+  int rval = tdb_walk(rdomain, a + 2 , &dump_state);
+}
+
 
 
 
