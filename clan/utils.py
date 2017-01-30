@@ -41,27 +41,26 @@ def get_console_width():
   rows, columns = os.popen('stty size', 'r').read().split()
   return int(columns)
 
-w = get_console_width()
-filler = ' ' * w
+def get_filler():
+  return ' ' * get_console_width()
 
 def get_time():
   millis = int(round(time.time() * 1000))
   return millis
 
 millis = get_time()
-refresh = 300
+refresh = 600
 
 def statusup(s):
-  global filler
   global millis
   global refresh
 
   t = get_time()
   if t - millis >= refresh:
     millis = t
-    sys.stdout.write('\r' + filler)
-    sys.stdout.write('\r' + (s+filler)[0:w])
+    sys.stdout.write('\r' + get_filler())
+    sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()])
     sys.stdout.flush()
 
 def statusend(s):
-  sys.stdout.write('\r' + (s+filler)[0:w] + '\r\n')
+  sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()] + '\r\n')
