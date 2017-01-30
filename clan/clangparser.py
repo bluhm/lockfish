@@ -1,6 +1,7 @@
 import clang
 from clang.cindex import *
 from clang.cindex import CursorKind
+from utils import *
 
 def parse_args(args):
   index = Index.create()
@@ -19,12 +20,13 @@ def parse_folder(path, ext='.c'):
   onlyfiles = [f for f in listdir(path) if isfile(join(path, f)) and splitext(f)[1] == ext]
   res = []
   i = 0
+  n = len(onlyfiles)
   for f in onlyfiles:
-    print "Parsing", f
+    i = i + 1
+    statusup("Parsing %d/%d: %s" %(i, n, f))
     tu = parse(join(path,f))
     res.append(tu)
-    i = i + 1
-    print "Progress:", i, "/", len(onlyfiles)
+  statusend( " - Done")
   return res
 
 def get_cursors(tus):

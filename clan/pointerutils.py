@@ -38,7 +38,7 @@ def build_pointers_table(alldecls, allfuncs, call_detectors = []):
         if len(thedecl.spelling) > 0 and not thedecl.spelling in PointersTable[ref.spelling]:
           PointersTable[ref.spelling].append(thedecl.spelling)
           break
-  statusend(" - Done\r\n")
+  statusend(" - Done")
   return PointersTable
 
 # returns functions which point to this one

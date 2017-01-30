@@ -19,7 +19,7 @@ def build_caller_table(alldecls, detectors=[]):
       lst = dt.detect(f)
       for call in lst:
         add_to_caller_table(call, f, CallerTable)
-  statusend(" - Done\r\n")
+  statusend(" - Done")
   return CallerTable
 
 

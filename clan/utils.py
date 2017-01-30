@@ -64,6 +64,4 @@ def statusup(s):
     sys.stdout.flush()
 
 def statusend(s):
-  global millis
-  millis = 0
-  statusup(s+'\n')
+  sys.stdout.write('\r' + (s+filler)[0:w] + '\r\n')

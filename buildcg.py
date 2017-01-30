@@ -43,7 +43,6 @@ def main():
   contents = ncl(cursors) # wrapped in a lazy collection for performance
 
   allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
-  print "Done"
 
   print "\nBuilding caller table..."
   callertable = build_caller_table_obsd(allfuncs)
