@@ -9,8 +9,8 @@ from clan.cgutils import *
 configs= {
            'limited3': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
            'limited': {'p': 'tests/csourcelim', 'r': 'if_linkstate', 'maxdepth': 100, 'ext': '.c'},
-           'cs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.c'},
-           'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30, 'ext': '.c'},
+           'cs3': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 3, 'ext': '.i'},
+           'cs': {'p': 'csource', 'r': 'if_linkstate', 'maxdepth': 30, 'ext': '.i'},
            'simple': {'p': 'tests/simple_c', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'callgraph': {'p': 'tests/cg_c', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
            'rec': {'p': 'tests/rec_c', 'r': 'a', 'maxdepth': 20, 'ext': '.c'},
