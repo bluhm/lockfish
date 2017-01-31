@@ -51,7 +51,11 @@ def get_time():
 millis = get_time()
 refresh = 600
 
-def statusup(s):
+def statusup(s, debug = False):
+  if debug:
+    print s
+    return
+    
   global millis
   global refresh
 

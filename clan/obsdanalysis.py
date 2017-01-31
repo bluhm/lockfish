@@ -2,6 +2,7 @@ from nodeutils import *
 from cgutils import *
 from pointerutils import *
 from callgraph import *
+from utils import *
 
 def takes_lock(func):
   for c in get_all_descendants(func).spelled("rw_enter_write"):
@@ -38,7 +39,7 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
       if callerNode.spell() not in done:
         done.add(callerNode.spell())
       else:
-        print "Already done: ", callerNode.spell()
+        statusup("Already done: " + callerNode.spell())
         callerNode.analyzed = True
         if not cg.addCall(curr, callerNode):
           print "Failure in algorithm to add already done node!"
@@ -49,19 +50,18 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
           depth = len(callerNode.getStack())
           if depth <= maxdepth:
             ws.append(callerNode)
-            print "New caller added: ", callerNode.spell(), "at depth:", depth
+            statusup("New caller added: " + callerNode.spell() + " at depth: " + str(depth))
           else:
             print "! -> Maximal depth of", maxdepth, "reached when adding", callerNode.spell()+'()', "calling", curr.spell()+'()'
         else:
-          print "Not adding to ws, because takes lock: ", callerNode.spell()
+          statusup("Not adding to ws, because takes lock: " + callerNode.spell())
       else:
-        print "Not adding to caller graph: ", callerNode.spell()
+        statusup("Not adding to caller graph: " + callerNode.spell())
   return cg
 
 
 def pointer_analysis(targets, contents):
   allfuncs = targets
-
   alldecls = contents.filter( lambda n:
     n.kind == CursorKind.FUNCTION_DECL or
      n.kind == CursorKind.VAR_DECL or
@@ -76,6 +76,7 @@ def pointer_analysis(targets, contents):
   print "Building pointers table..."
   ptable = build_pointers_table_obsd(alldecls, allfuncs)
 
+  print "Pointers table: ", ptable
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:
@@ -129,3 +130,15 @@ def build_caller_table_obsd(allfuncs):
 def build_pointers_table_obsd(alldecls, allfuncs):
   detectors = [tbd_detector()]
   return build_pointers_table(alldecls, allfuncs, detectors)
+
+class GetNodesForPointerAnalysisVisitor:
+  def __init__(self):
+    self.names = []
+  def visit(self, node):
+    if node is None:
+      return
+    if node.spell() in self.names:
+      return
+    elif not takes_lock(node.node):
+      self.names.append(node.spell())
+

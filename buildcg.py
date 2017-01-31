@@ -17,6 +17,7 @@ configs= {
            'tdb': {'p': 'tests/tdb_c', 'r': ['a'], 'maxdepth': 20, 'ext': '.c'},
            'pfc': {'p': 'tests/pfc', 'r': ['pfkey_sendup'], 'maxdepth': 30, 'ext': '.c'},
            'pfctdb': {'p': 'tests/pfc', 'r': ['pfkeyv2_dump_walker'], 'maxdepth': 30, 'ext': '.c'},
+           'takeslock': {'p': 'tests/takes_lock_c', 'r': ['a'], 'maxdepth': 30, 'ext': '.c'},
            'rsm': {'p': 'csource', 'r': ['rt_sendmsg'], 'maxdepth': 30, 'ext': '.i'},
            }
 
@@ -72,7 +73,9 @@ def main():
     print "Done"
 
     print "\nAnalyzing pointers:"
-    pointer_analysis(cg.getAllNames(), contents)
+    v = GetNodesForPointerAnalysisVisitor()
+    cg.acceptVisitor(v)
+    pointer_analysis(v.names, contents)
     print "Done"
 
 if __name__ == '__main__':
