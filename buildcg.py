@@ -23,7 +23,7 @@ configs= {
 import sys
 
 def help():
-  print "Usage: ", sys.argv[0],' config (', '|'.join(sorted(configs.keys())), ')', ' or', sys.argv[0], 'roots root1 [root2 root3 ...]'
+  print "Usage: \n\t", sys.argv[0],'config (', '|'.join(sorted(configs.keys())), ')', '\n\tor\n\t', sys.argv[0], 'roots root1 [root2 root3 ...]\n'
   sys.exit(0)
 
 def main():
