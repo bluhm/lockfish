@@ -1,0 +1,8 @@
+<bluhm> zmolo: tsleep(pf_purge_thread, PWAIT, "pftm", 1 * hz);
+<bluhm> wakeup(pf_purge_thread);
+<bluhm> tsleep, msleep, rwsleep, wakeup_n, wakeup, wakeup_one
+<bluhm> if_detach, if_deactivate, NET_LOCK
+<bluhm> 1. wakeup(pointer) und tsleep(pointer,...) ist nicht relevant
+<bluhm> 2. leaves, welche ein NET_LOCK machen, sind fuer Pointer-Analyse nicht relevant
+<bluhm> 3. Pruefen, dass Call zwischen LOCK und UNLOCK steht
+

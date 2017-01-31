@@ -79,7 +79,7 @@ def pointer_analysis(targets, contents):
   for fname in allfuncs:
     ptrs = get_pointers(fname, ptable)
     if len(ptrs) > 0:
-      print fname, "is pointed to from:", ptrs
+      print fname, "pointed from:", ptrs
     else:
       pass
 #      print "No pointers to", fname
@@ -97,7 +97,7 @@ def lock_analysis(cg):
         locks = True
         break
     if not locks:
-      print "Lock not found: ", stack
+      print "No lock:", stack
 
 
 class tbd_detector:
