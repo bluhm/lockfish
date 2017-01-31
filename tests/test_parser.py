@@ -13,7 +13,7 @@ class TestParser(tc):
     rdr()
     res = parse_folder('csourcelim', '.c')
     rdrstop()
-    self.assertTrue('Progress: 5 / 5' in rdrval())
+    self.assertTrue('Done' in rdrval())
     self.assertTrue(len(res) == 5)
     cs = get_cursors(res)
     for c in cs:

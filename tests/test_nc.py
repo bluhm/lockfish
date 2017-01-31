@@ -17,7 +17,7 @@ class TestNC(tc):
   def testPreps(self):
     global res
     global rdrv
-    self.assertTrue('Progress: 5 / 5' in rdrv)
+    self.assertTrue('Done' in rdrv)
     self.assertTrue(len(restus) == 5)
 
   #2
