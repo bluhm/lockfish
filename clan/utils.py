@@ -55,7 +55,7 @@ def statusup(s, debug = False):
   t = get_time()
   if t - millis >= refresh:
     millis = t
-    print s
+    print >> sys.stderr, s
 
 def statusend(s):
-  print s
+  print >> sys.stderr, s
