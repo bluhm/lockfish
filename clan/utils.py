@@ -51,7 +51,7 @@ def get_time():
 millis = get_time()
 refresh = 600
 
-def statusup(s, debug = False):
+def statusup(s, debug = True):
   if debug:
     print s
     return
@@ -66,5 +66,9 @@ def statusup(s, debug = False):
     sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()])
     sys.stdout.flush()
 
-def statusend(s):
+def statusend(s, debug = True):
+  if debug:
+    print s
+    return
+    
   sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()] + '\r\n')
