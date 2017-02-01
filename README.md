@@ -1,9 +1,8 @@
 # Python Syntactic Analysis Framework for C based on clang
 
-This is a work in progress library to enable syntactic analysis, tree traversal, searches on the clang cursors
-produced by the Python clang bindings.
+clan Python libdrary enables C parsing and syntactic analysis through tree traversal based on clang.
 
-Additionally we solve here problems in OpenBSD kernel building caller graph and detecting locks.
+Additionally we solve here problems in OpenBSD kernel building caller graph and detecting absent locks which have to be taken.
 
 # Install
 
@@ -22,7 +21,13 @@ Correct then the activate.sh to point to the libs from it.
 (env2): $ pip install -r requirements.txt
 
 
-you are good to go now
+you are good to go now, just run
+
+buildcg.py config simple
+
+to test it out.
+
+Bash completion after you . activate.sh should help you out.
 
 
 # Usage
@@ -30,28 +35,24 @@ you are good to go now
 ## OpenBSD Kernel Analysis
 
 It is done in buildcg.py 
-Configure there the root function in the main(), the entry point of the analysis, and the path: a folder where clang searches for the sources.
-then just run it (from venv):
 
-(env2): $ python buildcg.py
+(env2): $ buildcg.py roots functions to analyze
 
 ## Custom usage
 
-See the mydump on how to use the Node Collection class, called nc. 
-You can feed a number of nodes to it, Cursor nodes from clang python bindings, and then  nc gets searchable and filterable.
+See the tests and the buildcg.py file to get an idea on how to parse C and 
+use nc (Node Collection) and ncl (Node Collection Lazy) classes to traverse the AST.
 
-See callgraph for the call graph interface. It has a number of tree traversal features, can output call stacks, can print itself 
-nicely.
+See CallGraph for the caller graph interface. It has a number of tree traversal 
+features, can output call stacks, can pretty print itself.
 
 
 # Unit tests
 
-Are moved now out of the wat to the tests folder. They have to be fixed after this move to work again. 
-Namely python imports should be fixed. 
-
-Use them if you change the call graph or the mydump lazy collections.
+Are in the tests folder. Running them is as simple as:
+(env2): $ cd tests
+(env2): $ . run.sh
 
 # Credits and Help Requests
 
-Go all to zmolo@
-
+Go to zmolo@ and bluhm@.
