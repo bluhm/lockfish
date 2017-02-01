@@ -42,7 +42,7 @@ def get_time():
   return millis
 
 millis = get_time()
-refresh = 600
+refresh = 1000
 
 def statusup(s, debug = False):
   if debug:
