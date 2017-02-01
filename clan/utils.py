@@ -1,6 +1,6 @@
 import clang
 from pprint import pprint
-import os, sys, time
+import sys, time
 
 def mpprint(o, v = 1):
     if type(o) is clang.cindex.Cursor:
@@ -37,13 +37,6 @@ def tostr(crs):
 from clang.cindex import Cursor
 Cursor.__str__ = tostr
 
-def get_console_width():
-  rows, columns = os.popen('stty size', 'r').read().split()
-  return int(columns)
-
-def get_filler():
-  return ' ' * get_console_width()
-
 def get_time():
   millis = int(round(time.time() * 1000))
   return millis
@@ -51,7 +44,7 @@ def get_time():
 millis = get_time()
 refresh = 600
 
-def statusup(s, debug = True):
+def statusup(s, debug = False):
   if debug:
     print s
     return
@@ -62,13 +55,7 @@ def statusup(s, debug = True):
   t = get_time()
   if t - millis >= refresh:
     millis = t
-    sys.stdout.write('\r' + get_filler())
-    sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()])
-    sys.stdout.flush()
-
-def statusend(s, debug = True):
-  if debug:
     print s
-    return
-    
-  sys.stdout.write('\r' + (s+get_filler())[0:get_console_width()] + '\r\n')
+
+def statusend(s):
+  print s
