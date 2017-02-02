@@ -26,4 +26,4 @@ stamp-cpp: ${CFILES}
 	cd ${SYSOBJDIR} && ${NORMAL_C} -I${SYSOBJDIR} -E -o ${@:T:S,^,${.OBJDIR}/csource/,}
 
 test:
-  pushd tests && ./run.sh && popd
+	pushd tests && ./run.sh && popd
