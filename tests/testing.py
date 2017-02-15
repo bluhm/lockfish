@@ -2,20 +2,29 @@ from cStringIO import StringIO
 import sys
 
 ostdout = sys.stdout
+ostderr = sys.stderr
 
 mystdout = None
+mystderr = None
+
 def rdr():
   global mystdout
+  global mystderr
   mystdout = StringIO()
+  mystderr = StringIO()
   sys.stdout = mystdout
+  sys.stderr = mystderr
 
 def rdrstop():
   global ostdout
+  global ostderr
   sys.stdout = ostdout
+  sys.stderr = ostderr
 
 def rdrval():
   global mystdout
-  return mystdout.getvalue()
+  global mystderr
+  return mystdout.getvalue() + mystderr.getvalue()
 
 
 def test():
