@@ -28,10 +28,10 @@ class TestObsdAnalysis(tc):
   def testPreps(self):
     self.assertTrue('Done' in rdrv)
     self.assertTrue(len(tus) == 1) # one file
-    self.assertTrue(len(allfuncs.tonc()) == 5) # five functions
+    self.assertTrue(len(allfuncs.tonc()) == 6) # six functions total
   #2
   def testCallerTable(self):
-    self.assertTrue(len(callertable) == 2)
+    self.assertTrue(len(callertable) == 3)
     self.assertTrue(len(callertable['a']) == 2)
     self.assertTrue(callertable['a'][0].spelling == "b")
     self.assertTrue(callertable['a'][1].spelling == "c")
@@ -53,8 +53,10 @@ class TestObsdAnalysis(tc):
     lock_analysis(cg)
     rdrstop()
     expected="""No lock: [a, b]\n"""
+    res = rdrval()
     self.assertTrue(expected == rdrval())
 
+  #5
   def testPointerAnalysis(self):
      v = GetNodesForPointerAnalysisVisitor()
      cg.acceptVisitor(v)

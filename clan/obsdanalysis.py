@@ -4,11 +4,43 @@ from pointerutils import *
 from callgraph import *
 from utils import *
 
-def takes_lock(func):
+# func takes lock around a call to targ
+def takes_lock_for(func, targ):
+  locks = nc([])
+  unlocks = nc([])
+  calls = nc([])
+
   for c in get_all_descendants(func).spelled("rw_enter_write"):
     if get_all_descendants(c).spelled("netlock").some():
-      return True
-  return False
+      locks.append(c)
+
+  if len(locks) == 0:
+    return False
+
+  for c in get_all_descendants(func).spelled("rw_exit_write"):
+    if get_all_descendants(c).spelled("netlock").some():
+      unlocks.append(c)
+
+  call = targ.spelling
+
+  for c in get_all_descendants(func).spelled(call).ofkind(CursorKind.CALL_EXPR):
+    calls.append(c)
+
+  locklines = sorted([ c.location.line for c in locks ])
+  unlocklines = sorted([ c.location.line for c in unlocks ])
+  calllines = sorted([ c.location.line for c in calls ])
+
+  for callline in calllines:
+    try:
+      nearestlock = max([l for l in locklines if l < callline])
+      nearestunlock = min([l for l in unlocklines if l > nearestlock])
+      if not ( nearestlock < callline and callline < nearestunlock):
+        return False
+    except ValueError: # either no locks or no unlocks found 
+      return False
+
+  return True
+
 
 def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
   cg = CallGraph()
@@ -46,7 +78,7 @@ def build_call_graph(callertable, allfuncs, rootname, maxdepth = 20):
         continue
 
       if cg.addCall(curr, callerNode):
-        if not takes_lock(call):
+        if not takes_lock_for(call, curr.node):
           depth = len(callerNode.getStack())
           if depth <= maxdepth:
             ws.append(callerNode)
@@ -93,8 +125,8 @@ def lock_analysis(cg):
       continue
     stack = leaf.getStack()
     locks = False
-    for call in stack:
-      if takes_lock(call.node):
+    for i, call in enumerate(list(reversed(stack))[:-1]):
+      if takes_lock_for(call.node, stack[i+1].node):
         locks = True
         break
     if not locks:
@@ -139,6 +171,10 @@ class GetNodesForPointerAnalysisVisitor:
       return
     if node.spell() in self.names:
       return
-    elif not takes_lock(node.node):
+    else:
+      stack = node.getStack()
+      if len(stack) > 1:
+      	if takes_lock_for(node.node, stack[-2].node):
+      	  return
       self.names.append(node.spell())
 

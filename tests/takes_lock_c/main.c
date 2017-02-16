@@ -1,5 +1,4 @@
 void a(){
-
 }
 
 int netlock;
@@ -7,9 +6,13 @@ int netlock;
 void rw_enter_write(int n){
 }
 
+void rw_exit_write(int n){
+}
+
 void c(){
- a();
  rw_enter_write(netlock);
+ a();
+ rw_exit_write(netlock);
 }
 
 
