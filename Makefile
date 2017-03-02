@@ -11,7 +11,7 @@ clean:
 .include "${SYSOBJDIR}/Makefile"
 
 buildcg: stamp-cpp
-	ulimit -d `ulimit -d -H`; python2.7 $@.py ncs
+	ulimit -d `ulimit -d -H`; python2.7 $@.py config cs
 
 cpp: ${CFILES:S/.c$/.i/}
 
