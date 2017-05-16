@@ -10,7 +10,7 @@ def takes_lock_for(func, targ):
   unlocks = nc([])
   calls = nc([])
 
-  for c in get_all_descendants(func).spelled("rw_enter_write"):
+  for c in get_all_descendants(func).spelled("_rw_enter_write"):
     if get_all_descendants(c).spelled("netlock").some():
       locks.append(c)
   for c in get_all_descendants(func).spelled("solock"):
@@ -19,7 +19,7 @@ def takes_lock_for(func, targ):
   if len(locks) == 0:
     return False
 
-  for c in get_all_descendants(func).spelled("rw_exit_write"):
+  for c in get_all_descendants(func).spelled("_rw_exit_write"):
     if get_all_descendants(c).spelled("netlock").some():
       unlocks.append(c)
   for c in get_all_descendants(func).spelled("sounlock"):
