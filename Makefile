@@ -9,6 +9,7 @@ clean:
 	rm -f stamp-* csource/*.{i,d} *.pyc clan/*.pyc tests/*.pyc
 
 .include "${SYSOBJDIR}/Makefile"
+S=${SYSOBJDIR}/../../../../..
 
 buildcg: stamp-cpp
 	ulimit -d `ulimit -d -H`; python2.7 $@.py config cs
