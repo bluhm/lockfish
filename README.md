@@ -56,7 +56,7 @@ cg = build_call_graph(callertable, allfuncs, "main")
 
 1. Install a virtualenv and create one with Python 2
  
-```virtualenv --python=/path/to/python/2.7 ../env2```
+```virtualenv --python=`which python2.7` ../env2```
 
 2. Install clang with python bindings
 
