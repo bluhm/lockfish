@@ -1,11 +1,18 @@
 ![Logo](https://raw.githubusercontent.com/qutorial/lockfish/master/lockfish.svg.png)
 
 
-# Python Syntactic Analysis Framework for C based on clang
+# Lockfish is a library for simple syntactic analysis of C programs in Python
 
-clan Python libdrary enables C parsing and syntactic analysis through tree traversal based on clang.
+It is based on clang.
 
-Additionally we solve here problems in OpenBSD kernel building caller graph and detecting absent locks which have to be taken.
+Lockfish enables C parsing and syntactic analysis through tree traversal based on clang
+python bindings.
+
+Additionally we solve here locking problems in OpenBSD kernel by building caller graph and detecting the absent locks which have to be taken. You can use lockfish independently from OpenBSD completely.
+
+Now we can build caller graphs, and call-stacks, search pointers to 
+functions, perform simple syntactic requests to the abstract syntax tree.
+All of it is based on lazy collections.
 
 # Install
 
