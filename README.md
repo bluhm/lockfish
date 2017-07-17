@@ -17,10 +17,46 @@ All of it is based on lazy collections.
 You can use this work to quickly build your own checks on the C code of your 
 choice. 
 
+
+
+# Example 1. Parse a folder with C files, get all functions
+
+
+```
+
+# Parse all C files in a folder of your choice
+tus =  parse_folder("some c folder, ext = ".c")
+cursors = get_cursors(tus)
+contents = ncl(cursors)
+
+# get all functions quickly
+allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
+```
+
+# Example 2. Build a caller table (it will use knowledge of OpenBSD kernel)
+
+```
+# Based on the first example:
+callertable = build_caller_table_obsd(allfuncs)
+
+```
+
+# Example 3. Build a call graph.
+
+```
+# Based on the second example:
+cg = build_call_graph(callertable, allfuncs, "main")
+```
+
+- will build the graph of functions called starting from main()
+
+
+
 # Install
 
-1. Install a virtualenv and create one with Python 2 
-virtualenv --python=/path/to/python/2.7 ../env2
+1. Install a virtualenv and create one with Python 2
+ 
+```virtualenv --python=/path/to/python/2.7 ../env2```
 
 2. Install clang with python bindings
 
