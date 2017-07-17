@@ -55,24 +55,39 @@ cg = build_call_graph(callertable, allfuncs, "main")
 # Install
 
 1. Install a virtualenv and create one with Python 2
+```sudo apt install virtualenv```
+
  
 ```virtualenv --python=`which python2.7` ../env2```
 
 2. Install clang with python bindings
 
+We used clang 3.8. Newer version exist, but we haven't tested 
+lockfish with them yet, although, we expect it to work just fine.
+
+```sudo apt install clang-3.8```
+
 Correct then the activate.sh to point to the libs from it.
 
+In our case it shall be like this:
+```
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/llvm-3.8/lib/
+```
+
 3. Activate the venv
-. activate.sh
+
+```. activate.sh```
 
 4. Install the requirements
 
+```
 (env2): $ pip install -r requirements.txt
+```
 
 
 you are good to go now, just run
 
-buildcg.py config simple
+```buildcg.py config simple```
 
 to test it out.
 
@@ -85,7 +100,9 @@ Bash completion after you . activate.sh should help you out.
 
 It is done in buildcg.py 
 
+```
 (env2): $ buildcg.py roots functions to analyze
+```
 
 ## Custom usage
 
