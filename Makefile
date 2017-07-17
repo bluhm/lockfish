@@ -12,7 +12,10 @@ clean:
 S=${SYSOBJDIR}/../../../../..
 
 buildcg: stamp-cpp
-	ulimit -d `ulimit -d -H`; python2.7 $@.py config cs
+	ulimit -d `ulimit -d -H`; python2.7 buildcg.py roots if_get
+
+results/sbreserve: stamp-cpp
+	ulimit -d `ulimit -d -H`; python2.7 buildcg.py roots ${@:T} | tee $@
 
 cpp: ${CFILES:S/.c$/.i/}
 
