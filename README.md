@@ -1,3 +1,6 @@
+![Logo](https://raw.githubusercontent.com/qutorial/lockfish/master/lockfish.svg)
+
+
 # Python Syntactic Analysis Framework for C based on clang
 
 clan Python libdrary enables C parsing and syntactic analysis through tree traversal based on clang.
