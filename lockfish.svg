@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="lockfish.svg">
+   sodipodi:docname="lockfish.svg"
+   inkscape:export-filename="/home/zaur/lockfish/lockfish.svg.png"
+   inkscape:export-xdpi="22"
+   inkscape:export-ydpi="22">
   <defs
      id="defs4">
     <filter
@@ -65,9 +68,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="-335.68142"
-     inkscape:cy="564.78062"
+     inkscape:zoom="0.35"
+     inkscape:cx="226.90743"
+     inkscape:cy="673.41996"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -92,6 +95,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4151"
+       width="2082.9348"
+       height="874.79211"
+       x="-1341.4825"
+       y="-68.907112" />
     <path
        style="opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.53999996;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter4283)"
        d="m 440.75307,209.08482 c -17.04766,0.19586 -34.01735,5.52457 -46.4707,17.49414 -12.68552,14.49214 -17.13253,32.26877 -16.39258,50.43164 -0.84264,3.90348 -1.19988,7.88771 -0.78516,11.92969 l 2.24219,1.54492 c 2.85452,16.62505 9.41474,32.97636 17.39453,46.83789 31.9632,59.34109 89.62704,108.0326 157.81055,117.20899 22.60597,-8.95246 44.26378,11.64441 48.73828,32.85937 0.69044,20.32891 35.0206,32.48626 26.17187,4.01758 -7.72186,-19.38972 13.20372,-31.19797 15.45508,-6.10547 -0.64561,22.07929 21.47141,57.13829 31.25586,19.06445 1.80491,-22.30864 43.17193,-30.75906 31.33985,-51.24218 -20.87995,-7.75047 -44.7421,-7.40151 -64.56055,-19.3418 -20.55659,-8.91022 -26.86769,-31.98735 -22.27734,-52.30664 -12.06903,-22.46653 12.29729,-43.60836 31.41796,-24.86133 10.69047,8.38367 53.9022,2.12309 32.61133,-11.25391 -20.29615,-1.92608 -44.89786,6.01933 -60.3789,-11.91601 C 577.2895,285.78198 530.6381,230.6181 463.63198,211.85826 c -7.36378,-1.89038 -15.12997,-2.86247 -22.87891,-2.77344 z M 603.81948,318.6981 c 8.09516,10.96964 19.75259,19.07715 30.45898,27.36524 -15.49259,14.09681 -43.36915,-24.35598 -30.45898,-27.36524 z m 85.65039,29.0957 0.60351,0.0254 -0.60351,-0.0254 z m -18.85156,0.67774 c 5.32357,0.0533 10.63631,0.48525 15.96093,0.52539 -4.15933,17.03299 -47.17951,-0.0579 -18.24414,-0.52344 0.76096,-0.0101 1.52269,-0.01 2.28321,-0.002 z m -49.21094,79.38086 c 21.05188,2.46497 38.09495,18.90438 59.67968,20.73633 8.97337,2.23036 18.0149,4.17797 26.98829,6.4082 -20.46642,8.99259 -29.23585,43.22367 -49.29688,44.52734 -3.77712,-16.54042 -22.96401,-62.52742 -39.1543,-33.27343 2.31169,11.1214 -1.95299,36.20857 -12.17773,15.39453 -21.44162,-15.26829 -12.66134,-52.30091 13.96094,-53.79297 z m -1.76953,83.41601 0.53515,0.11914 -0.53515,-0.11914 z"
@@ -156,5 +166,17 @@
        d="m 138.05943,101.02371 a 5.7452426,5.7452426 0 0 0 -5.74414,5.74609 5.7452426,5.7452426 0 0 0 1.9707,4.32617 l 0,10.90821 7.14258,0 0,-10.58985 a 5.7452426,5.7452426 0 0 0 2.37696,-4.64453 5.7452426,5.7452426 0 0 0 -5.7461,-5.74609 z"
        id="rect4205"
        inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="-899.99994"
+       y="383.79077"
+       id="text4153"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4155"
+         x="-899.99994"
+         y="383.79077"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:180px;font-family:STIXSizeFourSym;-inkscape-font-specification:STIXSizeFourSym">lockfish</tspan></text>
   </g>
 </svg>

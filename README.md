@@ -14,6 +14,9 @@ Now we can build caller graphs, and call-stacks, search pointers to
 functions, perform simple syntactic requests to the abstract syntax tree.
 All of it is based on lazy collections.
 
+You can use this work to quickly build your own checks on the C code of your 
+choice. 
+
 # Install
 
 1. Install a virtualenv and create one with Python 2 
