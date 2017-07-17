@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/qutorial/lockfish/master/lockfish.svg)
+![Logo](https://raw.githubusercontent.com/qutorial/lockfish/master/lockfish.svg.png)
 
 
 # Python Syntactic Analysis Framework for C based on clang
