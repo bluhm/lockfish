@@ -1,6 +1,6 @@
-from clan.nc import nc
+from lockfish.nc import nc
 from testing import *
-from clan.clangparser import *
+from lockfish.clangparser import *
 
 rdr()
 res = parse_folder('csourcelim', '.c')

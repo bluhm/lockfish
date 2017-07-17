@@ -1,4 +1,4 @@
-from clan.callgraph import *
+from lockfish.callgraph import *
 from testing import *
 
 def getEmptyNode():

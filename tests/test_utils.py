@@ -1,5 +1,5 @@
-from clan.clangparser import *
-from clan.utils import *
+from lockfish.clangparser import *
+from lockfish.utils import *
 from testing import *
 
 class TestUtils(tc):

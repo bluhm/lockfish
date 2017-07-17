@@ -1,4 +1,4 @@
-from clan.clangparser import *
+from lockfish.clangparser import *
 from clang.cindex import Cursor
 from testing import *
 

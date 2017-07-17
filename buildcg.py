@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from clan.obsdanalysis import *
-from clan.clangparser import *
-from clan.lazy import *
+from lockfish.obsdanalysis import *
+from lockfish.clangparser import *
+from lockfish.lazy import *
 from clang.cindex import CursorKind
-from clan.cgutils import *
+from lockfish.cgutils import *
 
 configs= {
            'limited3': {'p': 'tests/csourcelim', 'r': ['if_linkstate'], 'maxdepth': 3, 'ext': '.c'},

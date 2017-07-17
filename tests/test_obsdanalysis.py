@@ -1,8 +1,8 @@
-from clan.obsdanalysis import *
-from clan.clangparser import *
-from clan.lazy import *
+from lockfish.obsdanalysis import *
+from lockfish.clangparser import *
+from lockfish.lazy import *
 from clang.cindex import CursorKind
-from clan.cgutils import *
+from lockfish.cgutils import *
 
 from testing import *
 
@@ -24,19 +24,22 @@ rdrstop()
 
 #Testing node collection
 class TestObsdAnalysis(tc):
+
   #1
   def testPreps(self):
     self.assertTrue('Done' in rdrv)
     self.assertTrue(len(tus) == 1) # one file
     self.assertTrue(len(allfuncs.tonc()) == 6) # six functions total
+
   #2
   def testCallerTable(self):
     self.assertTrue(len(callertable) == 3)
     self.assertTrue(len(callertable['a']) == 2)
     self.assertTrue(callertable['a'][0].spelling == "b")
     self.assertTrue(callertable['a'][1].spelling == "c")
-    self.assertTrue(len(callertable['rw_enter_write']) == 1)
-    self.assertTrue(callertable['rw_enter_write'][0].spelling == "c")
+    self.assertTrue(len(callertable['_rw_enter_write']) == 1)
+    self.assertTrue(callertable['_rw_enter_write'][0].spelling == "c")
+
   #3
   def testCallGraph(self):
     expected = \
@@ -47,13 +50,13 @@ class TestObsdAnalysis(tc):
     cg.pprint()
     rdrstop()
     self.assertTrue(expected == rdrval())
+
   #4
   def testLockAnalysis(self):
     rdr()
     lock_analysis(cg)
     rdrstop()
     expected="""No lock: [a, b]\n"""
-    res = rdrval()
     self.assertTrue(expected == rdrval())
 
   #5
@@ -84,12 +87,12 @@ void a(){
 
 int netlock;
 
-void rw_enter_write(int n){
+void _rw_enter_write(int n){
 }
 
 void c(){
  a();
- rw_enter_write(netlock);
+ _rw_enter_write(netlock);
 }
 
 

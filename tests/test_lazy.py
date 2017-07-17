@@ -1,7 +1,7 @@
 from testing import *
-from clan.clangparser import *
-from clan.lazy import *
-from clan.nodeutils import get_all_descendants
+from lockfish.clangparser import *
+from lockfish.lazy import *
+from lockfish.nodeutils import get_all_descendants
 #test decls
 
 rdr()
