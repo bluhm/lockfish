@@ -74,6 +74,15 @@ In our case it shall be like this:
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/llvm-3.8/lib/
 ```
 
+Change to this directory and make sure that libclang.so is there.
+Create a symbolic link to it, if there is no libclang.so.
+
+```
+cd /us/lib/llvm-3.8/lib/
+ls libclang.so # Does it find something? If not:
+sudo ln -s libclang.so.1 libclang.so
+```
+
 3. Activate the venv
 
 ```. activate.sh```
@@ -84,15 +93,48 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/llvm-3.8/lib/
 (env2): $ pip install -r requirements.txt
 ```
 
-
 you are good to go now, just run
 
 ```buildcg.py config simple```
 
 to test it out.
 
-Bash completion after you . activate.sh should help you out.
+Bash completion after you `. activate.sh` should help you out to type the command.
 
+
+Example output:
+
+
+```
+Taking config:  simple
+Parsing in tests/simple_c
+ - Done
+
+Building caller table...
+ - Done
+
+ ############# ANALYSIS FOR A #############   
+
+Building caller graph for a
+Searching for the root function...
+Done
+
+Caller graph:
+ |- a
+    |- c
+
+Analyzing locks:
+No lock: [a, c]
+Done
+
+Analyzing pointers:
+Building pointers table...
+ - Done
+Pointers table:  {'a': ['funcsarray', 'd', 'b'], 'c': ['funcsarray']}
+a pointed from: ['funcsarray', 'd', 'b']
+c pointed from: ['funcsarray']
+Done
+```
 
 # Usage
 
@@ -121,4 +163,4 @@ Are in the tests folder. Running them is as simple as:
 
 # Credits and Help Requests
 
-Go to zmolo@ and bluhm@.
+Go to zmolo@genua.de and bluhm@genua.de.
