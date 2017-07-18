@@ -17,7 +17,7 @@ def build_pointers_table(alldecls, allfuncs, call_detectors = []):
   # iterate over all declarations to find all references to the functions
   for i, thedecl in enumerate(alldecls):
 
-    statusup("Analysing declaration #%d: %s" % (i, thedecl.spelling))
+    statusup("Building pt[%d], processing declaration #%d: %s" % (len(PointersTable), i, thedecl.spelling))
 
     # function reference filter, selects only refs to interesting functions
     frf = lambda n: n.kind == CursorKind.DECL_REF_EXPR and n.spelling in PointersTable

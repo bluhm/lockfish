@@ -11,7 +11,7 @@ def add_to_caller_table(called, caller, CallerTable):
 def build_caller_table(alldecls, detectors=[]):
   CallerTable = dict()
   for i, f in enumerate(alldecls):
-    statusup("Analysing declaration #%d: %s" % (i, f.spelling))
+    statusup("Building ct[%d], processing function #%d: %s" % (len(CallerTable), i, f.spelling))
     for call in get_all_descendants(f).filter(lambda n: n.kind == CursorKind.CALL_EXPR):
       add_to_caller_table(call, f, CallerTable)
 

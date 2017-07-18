@@ -49,7 +49,7 @@ def main():
     help()
 
   mypath = configs[conf]['p']
-  print "Parsing in", mypath
+  print "Parsing C files in", mypath
 
   tus =  parse_folder(mypath, ext = configs[conf]['ext']) # translation units
   cursors = get_cursors(tus) # iterable cursors
@@ -57,26 +57,31 @@ def main():
 
   allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL).shallow().maxdepth(1)
 
+  print "Going to analyze these roots:", configs[conf]['r']
+
   print "\nBuilding caller table..."
   callertable = build_caller_table_obsd(allfuncs)
+  print "\n - caller table built"
+
+  print "Going to analyze these roots:", configs[conf]['r']
 
   for rootname in configs[conf]['r']:
     print "\n ############# ANALYSIS FOR %s #############   " % rootname.upper()
     print "\nBuilding caller graph for", rootname
     cg = build_call_graph(callertable, allfuncs, rootname, maxdepth = configs[conf]['maxdepth'])
-    print "Done"
+    print "\n - caller graph built"
     print "\nCaller graph:"
     cg.pprint()
 
-    print "\nAnalyzing locks:"
+    print "\nAnalyzing locks for %s" % rootname
     lock_analysis(cg)
-    print "Done"
+    print "\n - locks analysis finished for %s" % rootname
 
-    print "\nAnalyzing pointers:"
+    print "\nAnalyzing pointers for %s" % rootname
     v = GetNodesForPointerAnalysisVisitor()
     cg.acceptVisitor(v)
     pointer_analysis(v.names, contents)
-    print "Done"
+    print "\n - pointers analysis finished for %s" % rootname
 
 if __name__ == '__main__':
   main()
