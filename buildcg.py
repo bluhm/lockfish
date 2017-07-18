@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import sys, os
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
 from lockfish.obsdanalysis import *
 from lockfish.clangparser import *
 from lockfish.lazy import *
