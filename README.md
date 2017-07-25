@@ -106,18 +106,44 @@ _rw_enter_write <SourceLocation file './takes_lock_c/main.c', line 6, column 6>
 
 ```
 # Based on the first example:
-callertable = build_caller_table_obsd(allfuncs)
+from lockfish.cgutils import *
+callertable = build_caller_table(allfuncs)
 
+Building ct[0], processing function #0: pointer
+ - Done
+
+
+# let's print it now
+
+for func, callers in callertable.items():
+  print func, 'is called by', map(lambda x: x.spelling, callers)
+
+a is called by ['b', 'c']
+_rw_enter_write is called by ['c']
+_rw_exit_write is called by ['c'] 
 ```
 
 # Example 3. Build a call graph.
 
 ```
-# Based on the second example:
-cg = build_call_graph(callertable, allfuncs, "main")
+# Based on the second example, build caller graph for a()
+from lockfish.obsdanalysis import *
+cg = build_call_graph(callertable, allfuncs, "a")
+
+Searching for the root function...
+New caller added: b at depth: 2
+
+# and print it.
+cg.pprint()
+
+ |- a
+    |- b
+    |- c
+
+
 ```
 
-- will build the graph of functions called starting from main()
+- will build the graph of functions calls starting from a(), in reversed order, a is called by b and c here.
 
 
 
