@@ -73,6 +73,10 @@ cursors = get_cursors(tus)
 contents = ncl(cursors)
 
 # get all functions quickly
+# We use clang python bindings here
+# Check the cursor kind enum and more APIs here:
+# https://github.com/llvm-mirror/clang/blob/master/bindings/python/clang/cindex.py
+
 allfuncs = contents.ofkind(CursorKind.FUNCTION_DECL)
 
 
