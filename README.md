@@ -68,7 +68,7 @@ from lockfish.lazy import *
 from clang.cindex import CursorKind
 
 # Parse all C files in a folder of your choice
-tus =  parse_folder("some c folder, ext = ".c")
+tus =  parse_folder("takes_lock_c", ext = ".c")
 cursors = get_cursors(tus)
 contents = ncl(cursors)
 
